@@ -1,7 +1,4 @@
 .footer {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  padding: 0 0 0 86px;
+  padding-bottom: 100px;
 }
 

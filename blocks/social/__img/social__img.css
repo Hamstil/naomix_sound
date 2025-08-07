@@ -1,0 +1,27 @@
+.social__img {
+    width: 84px;
+}
+
+@media screen and (max-width: 1280px) {
+    .social__img {
+        width: 60px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .social__img {
+        width: 56px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .social__img {
+        width: 48px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .social__img {
+        width: 48px;
+    }
+}

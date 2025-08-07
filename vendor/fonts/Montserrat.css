@@ -42,3 +42,12 @@
   src: url("Montserrat-Bold.woff2") format("woff2"),
        url("Montserrat-Bold.woff") format("woff");
 }
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style:  normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("Montserrat-ExtraBold.woff2") format("woff2"),
+       url("Montserrat-ExtraBold.woff") format("woff");
+}

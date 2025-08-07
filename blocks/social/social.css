@@ -1,0 +1,33 @@
+.social {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  list-style: none;
+  gap: 50px;
+}
+
+@media screen and (max-width: 1280px) {
+  .social {
+    gap: 33px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .social {
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .social {
+    gap: 26px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .social {
+    gap: 26px;
+  }
+}

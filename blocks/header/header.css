@@ -1,9 +1,10 @@
 .header {
-  background-image: url(../../images/first-sector-img-1920.jpg);  
-  background-repeat: no-repeat;
-  background-size: cover;  
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 41px 101px 0 101px;
+    background-image: url('../../images/bg-hed-1920.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 150px;
 }
