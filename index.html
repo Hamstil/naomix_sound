@@ -27,6 +27,40 @@
       />
     </header>
     <main class="content">
+      <section class="player">
+        <button
+          class="player__buttonPlayPause"
+          aria-label="Воспроизвести/пауза"
+        ></button>
+        <div class="player__select">
+          <span class="player__icon-eq"></span>
+          <select class="player__dropdown" aria-label="Выбор звука">
+            <option value="forest">Шум леса</option>
+            <option value="spring">Родник</option>
+            <option value="foliage">Шум листвы</option>
+          </select>
+        </div>
+        <div class="player__controls">
+          <label class="player__label">
+            <input type="checkbox" class="player__checkbox-timer" />
+            Таймер:
+            <select class="player__timer">
+              <option value="0">Без таймера</option>
+              <option value="5">5 минут</option>
+              <option value="10">10 минут</option>
+              <option value="15">15 минут</option>
+              <option value="30">30 минут</option>
+              <option value="45">45 минут</option>
+              <option value="60">1 час</option>
+              <option value="90">1.5 часа</option>
+            </select>
+          </label>
+          <label class="player__label">
+            <button class="player__volumeOnOff"></button>
+            <input type="range" min="0" max="100" value="50" class="player__volume">
+          </label>
+        </div>
+      </section>
       <section class="info">
         <div class="info__block">
           <h1 class="info__title">Звуки для сна, релакса и медитации</h1>
@@ -61,7 +95,70 @@
       </section>
     </main>
     <footer class="footer">
-      
+      <p class="footer__copyright">
+        Авторское право © 2025 Naomix. Все права защищены.
+      </p>
+      <p class="footer__cookie">
+        Пользуясь сайтом вы соглашаетесь с применением технологии Cookie:
+        обработки и хранению данных на вашем устройстве. Это повсеместная
+        технология, обеспечивающая работу веб-страниц и корректному отображению
+        контента в вашем браузере.
+      </p>
+      <div class="donations">
+        <div class="donations__info">
+          <p class="donations__card">2202 1568 5547 4551</p>
+          <img
+            src="./images/icon-copy.svg"
+            alt="Скопировать номер карты"
+            class="donations__icon-copy"
+            loading="lazy"
+          />
+          <p class="donations__text">Копировать</p>
+        </div>
+        <p class="donations__description">Донаты коту на печеньки. Спасибо!</p>
+      </div>
+      <div class="contacts">
+        <div class="contacts__email">
+          <img
+            src="./images/icon-mail.svg"
+            alt="Иконка электронной почты"
+            class="contacts__icon-email"
+            loading="lazy"
+          />
+          <a href="mailto:support@naomix.ru" class="contacts__link"
+            >support@naomix.ru</a
+          >
+        </div>
+        <ul class="contacts__social">
+          <li class="contacts__social-item">
+            <a href="#" class="contacts__social-link"
+              ><img
+                src="./images/social/icon-vk.svg"
+                alt="Иконка ВК"
+                class="contacts__social-img"
+                loading="lazy"
+            /></a>
+          </li>
+          <li class="contacts__social-item">
+            <a href="#" class="contacts__social-link"
+              ><img
+                src="./images/social/icon-youtube.svg"
+                alt="Иконка YouTube"
+                class="contacts__social-img"
+                loading="lazy"
+            /></a>
+          </li>
+          <li class="contacts__social-item">
+            <a href="#" class="contacts__social-link"
+              ><img
+                src="./images/social/icon-telegram.svg"
+                alt="Иконка Telegram"
+                class="contacts__social-img"
+                loading="lazy"
+            /></a>
+          </li>
+        </ul>
+      </div>
     </footer>
   </body>
 </html>
