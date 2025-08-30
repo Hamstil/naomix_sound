@@ -1,0 +1,26 @@
+.donations__card {
+  margin: 0 27px 0 0;
+  padding: 0;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 27px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+@media screen and (max-width: 1700px) {
+  .donations__card {
+    font-size: 15px;
+    line-height: 18px;
+    margin: 0 18px 0 0;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .donations__card {
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0 6px 0 0;
+  }
+}

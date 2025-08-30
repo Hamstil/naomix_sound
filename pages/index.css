@@ -2,10 +2,25 @@
 @import url(../vendor/fonts/Montserrat.css);
 
 @import url(../blocks/page/page.css);
+@import url(../blocks/page/__footer/page__footer.css);
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
 
 @import url(../blocks/content/content.css);
 
 @import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);
+@import url(../blocks/footer/__cookie/footer__cookie.css);
+@import url(../blocks/donations/donations.css);
+@import url(../blocks/donations/__info/donations__info.css);
+@import url(../blocks/donations/__card/donations__card.css);
+@import url(../blocks/donations/__icon-copy/donations__icon-copy.css);
+@import url(../blocks/donations/__text/donations__text.css);
+@import url(../blocks/donations/__description/donations__description.css);
+@import url(../blocks/contacts/contacts.css);
+@import url(../blocks/contacts/__email/contacts__email.css);
+@import url(../blocks/contacts/__icon-email/contacts__icon-email.css);
+@import url(../blocks/contacts/__link/contacts__link.css);
+@import url(../blocks/contacts/__social/contacts__social.css);
+@import url(../blocks/contacts/__social-img/contacts__social-img.css);
 

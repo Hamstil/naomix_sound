@@ -1,0 +1,21 @@
+.donations {
+  min-width: 394px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 15px 0;
+}
+
+@media screen and (max-width: 1700px) {
+  .donations {
+    min-width: 277px;
+    gap: 10px 0;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .donations {
+    min-width: 246px;
+    gap: 7px 0;
+  }
+}
