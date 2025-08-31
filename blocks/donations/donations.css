@@ -1,5 +1,5 @@
 .donations {
-  min-width: 394px;
+  max-width: 394px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -8,14 +8,30 @@
 
 @media screen and (max-width: 1700px) {
   .donations {
-    min-width: 277px;
+    max-width: 277px;
     gap: 10px 0;
   }
 }
 
 @media screen and (max-width: 1200px) {
   .donations {
-    min-width: 246px;
+    max-width: 246px;
     gap: 7px 0;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .donations {
+    max-width: 277px;
+    gap: 9px 0;
+    margin-bottom: 26px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .donations {
+    max-width: 264px;
+    gap: 10px 0;
+    margin-bottom: 23px;
   }
 }

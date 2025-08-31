@@ -22,3 +22,17 @@
     line-height: 15px;
   }
 }
+
+@media screen and (max-width: 960px) {
+  .donations__description {
+    font-size: 13px;
+    line-height: 16px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .donations__description {
+    font-size: 13px;
+    line-height: 16px;
+  }
+}

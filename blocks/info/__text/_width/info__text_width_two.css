@@ -1,0 +1,21 @@
+.info__text_width_two {
+  max-width: 453px;
+}
+
+@media screen and (max-width: 1700px) {
+  .info__text_width_two {
+    max-width: 317px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .info__text_width_two {
+    max-width: 253px;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .info__text_width_two {
+    max-width: 451px;
+  }
+}

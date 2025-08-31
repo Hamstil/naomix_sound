@@ -23,3 +23,17 @@
     line-height: 15px;
   }
 }
+
+@media screen and (max-width: 960px) {
+  .contacts__link {
+    font-size: 15px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .contacts__link {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

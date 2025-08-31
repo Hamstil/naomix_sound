@@ -1,0 +1,27 @@
+.info__title_width_two {
+    max-width: 316px;
+}
+
+@media screen and (max-width: 1700px) {
+    .info__title_width_two {
+        max-width: 211px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .info__title_width_two {
+        max-width: 169px;
+    }
+}
+
+@media screen and (max-width: 996px) {
+    .info__title_width_two {
+        max-width: 260px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .info__title_width_two {
+        max-width: 260px;
+    }
+}

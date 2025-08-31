@@ -13,3 +13,9 @@
         max-width: 38px;
     }
 }
+
+@media screen and (max-width: 960px) {
+    .contacts__social-img {
+        max-width: 43px;
+    }
+}

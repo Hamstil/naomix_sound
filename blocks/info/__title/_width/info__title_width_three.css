@@ -1,0 +1,21 @@
+.info__title_width_three {
+  max-width: 396px;
+}
+
+@media screen and (max-width: 1700px) {
+  .info__title_width_three {
+    max-width: 263px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .info__title_width_three {
+    max-width: 211px;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .info__title_width_three {
+    max-width: 456px;
+  }
+}

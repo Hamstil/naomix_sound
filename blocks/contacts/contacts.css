@@ -2,3 +2,15 @@
     display: flex;
     flex-direction: column;
 }
+
+@media screen and (max-width: 960px) {
+    .contacts {
+         margin: 0 0 19px 0;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .contacts {
+         margin: 0 0 21px 0;
+    }
+}

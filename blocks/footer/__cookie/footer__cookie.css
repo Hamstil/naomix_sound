@@ -23,3 +23,23 @@
     max-width: 242px;
   }
 }
+
+@media screen and (max-width: 960px) {
+  .footer__cookie {
+    font-size: 13px;
+    line-height: 16px;
+    max-width: 638px;
+    order: 1;
+    margin-bottom: 19px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .footer__cookie {
+    font-size: 12px;
+    line-height: 15px;
+    max-width: 242px;
+    order: 1;
+    margin-bottom: 17px;
+  }
+}

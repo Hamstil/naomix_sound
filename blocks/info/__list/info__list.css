@@ -1,0 +1,33 @@
+.info__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #fff;
+}
+
+@media screen and (max-width: 1700px) {
+  .info__list {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .info__list {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .info__list {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
