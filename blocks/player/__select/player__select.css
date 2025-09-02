@@ -1,0 +1,7 @@
+.player__select {
+    display: flex;
+    min-width: 646px;
+    height: 73px;
+    border-radius: 50px;
+    background-color: #fff;
+}

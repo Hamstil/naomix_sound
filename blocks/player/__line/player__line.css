@@ -1,0 +1,6 @@
+.player__line {
+    width: 3px;
+    height: 51px;    
+    margin: 11px 10px 11px 0;
+    background-color: #000;
+}

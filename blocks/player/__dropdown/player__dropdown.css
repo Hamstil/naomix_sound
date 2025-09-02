@@ -1,0 +1,15 @@
+.player__dropdown {
+  width: 100%;
+  border: none;
+  padding: 10px 10px 10px 145px;  
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0px;
+  text-align: left;
+  appearance: none; /* убираем стандартную стрелку */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url("../../../images/arr-down.svg") no-repeat right 44px center;
+  background-size: 20px; /* меняем размер стрелки */
+}

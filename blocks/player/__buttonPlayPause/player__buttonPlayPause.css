@@ -1,0 +1,38 @@
+.player__buttonPlayPause {
+    width: 161px;
+    height: 161px;
+    background: url('../../../images/play.svg') no-repeat center;
+    background-size: cover;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1700px) {
+    .player__buttonPlayPause {
+        width: 122px;
+        height: 122px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .player__buttonPlayPause {
+        width: 102px;
+        height: 102px;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .player__buttonPlayPause {
+        width: 101px;
+        height: 101px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .player__buttonPlayPause {
+        width: 79px;
+        height: 79px;
+    }
+}

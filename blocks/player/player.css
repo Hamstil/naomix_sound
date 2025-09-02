@@ -1,0 +1,31 @@
+.player {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 55px;
+}
+
+@media screen and (max-width: 1700px) {
+  .player {
+    row-gap: 43px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .player {
+    row-gap: 38px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .player {
+    row-gap: 27px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .player {
+    row-gap: 30px;
+  }
+}
