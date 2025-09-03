@@ -1,0 +1,15 @@
+.player__checkmark {
+  display: inline-block;
+  width: 55px;
+  height: 29px;
+  background: url('../../../images/tumb-off.svg') no-repeat center;
+  background-size: cover;
+  cursor: pointer;
+  margin-right: 30px;
+  transition: 0.3s;
+}
+
+.player__checkbox-timer:checked + .player__checkmark {
+  background: url('../../../images/tumb-on.svg') no-repeat center;
+  background-size: cover;
+}

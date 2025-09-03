@@ -14,6 +14,14 @@
 @import url(../blocks/player/__icon-eq/player__icon-eq.css);
 @import url(../blocks/player/__line/player__line.css);
 @import url(../blocks/player/__dropdown/player__dropdown.css);
+@import url(../blocks/player/__controls/player__controls.css);
+@import url(../blocks/player/__label/player__label.css);
+@import url(../blocks/player/__checkbox-timer/player__checkbox-timer.css);
+@import url(../blocks/player/__checkmark/player__checkmark.css);
+@import url(../blocks/player/__timerText/player__timerText.css);
+@import url(../blocks/player/__timer/player__timer.css);
+@import url(../blocks/player/__volumeOnOff/player__volumeOnOff.css);
+@import url(../blocks/player/__volume/player__volume.css);
 
 @import url(../blocks/info/info.css);
 @import url(../blocks/info/__title/info__title.css);

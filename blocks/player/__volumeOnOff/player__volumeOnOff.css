@@ -1,0 +1,10 @@
+.player__volumeOnOff {
+  width: 37px;
+  height: 32.07px;
+  margin-right: 17px;
+  background: url('../../../images/icon-vol-sound.svg') no-repeat center;
+  background-size: cover;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}

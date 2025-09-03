@@ -13,3 +13,43 @@
   background: url("../../../images/arr-down.svg") no-repeat right 44px center;
   background-size: 20px; /* меняем размер стрелки */
 }
+
+@media screen and (max-width: 1700px) {
+  .player__dropdown {
+    padding: 15px 15px 18px 103px;
+    font-size: 16px;
+    line-height: 20px;
+    background-size: 18px;
+    background-position: right 32px center;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .player__dropdown {
+    padding: 11px 11px 14px 87px;
+    font-size: 15px;
+    line-height: 18px;
+    background-size: 18px;
+    background-position: right 22px center;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .player__dropdown {
+    padding: 11px 11px 14px 87px;
+    font-size: 15px;  
+    line-height: 18px;
+    background-size: 14px;
+    background-position: right 26px center;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .player__dropdown {
+    padding: 12px 12px 13px 39px;
+    font-size: 12px;  
+    line-height: 15px;
+    background-size: 14px;
+    background-position: right 26px center;
+  }
+}

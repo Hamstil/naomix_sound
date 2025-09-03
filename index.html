@@ -33,7 +33,11 @@
           aria-label="Воспроизвести/пауза"
         ></button>
         <div class="player__select">
-          <img src="./images/icon-equalizer.svg" alt="Иконка эквалайзера" class="player__icon-eq">          
+          <img
+            src="./images/icon-equalizer.svg"
+            alt="Иконка эквалайзера"
+            class="player__icon-eq"
+          />
           <div class="player__line"></div>
           <select class="player__dropdown" aria-label="Выбор звука">
             <option value="forest">Шум леса</option>
@@ -43,8 +47,10 @@
         </div>
         <div class="player__controls">
           <label class="player__label">
-            <input type="checkbox" class="player__checkbox-timer" />
-            Таймер:
+            <input type="checkbox" class="player__checkbox-timer"/>
+            <span class="player__checkmark"></span>
+
+            <span class="player__timerText">Таймер:</span>
             <select class="player__timer">
               <option value="0">Без таймера</option>
               <option value="5">5 минут</option>
@@ -58,13 +64,21 @@
           </label>
           <label class="player__label">
             <button class="player__volumeOnOff"></button>
-            <input type="range" min="0" max="100" value="50" class="player__volume">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              class="player__volume"
+            />
           </label>
         </div>
       </section>
       <section class="info">
         <div class="info__block">
-          <h1 class="info__title info__title_width_one">Звуки для сна, релакса и медитации</h1>
+          <h1 class="info__title info__title_width_one">
+            Звуки для сна, релакса и медитации
+          </h1>
           <div class="info__line"></div>
           <p class="info__text info__text_width_one">
             Добро пожаловать в сервис «Наомикс»! Здесь звуки природы помогают
@@ -79,7 +93,9 @@
           </ul>
         </div>
         <div class="info__block">
-          <h2 class="info__title info__title_width_two">Повысьте качество жизни</h2>
+          <h2 class="info__title info__title_width_two">
+            Повысьте качество жизни
+          </h2>
           <div class="info__line"></div>
           <p class="info__text info__text_width_two">
             Для осуществления мечты нужна энергия. Сон - наш верный помощник в
@@ -88,7 +104,9 @@
           </p>
         </div>
         <div class="info__block">
-          <h2 class="info__title info__title_width_three">Наш эксклюзивный сервис для искушенных</h2>
+          <h2 class="info__title info__title_width_three">
+            Наш эксклюзивный сервис для искушенных
+          </h2>
           <div class="info__line"></div>
           <p class="info__text info__text_width_three">
             Несмотря на текущий простой функционал, совсем скоро вы сможете
