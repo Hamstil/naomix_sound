@@ -8,3 +8,35 @@
   outline: none;
   cursor: pointer;
 }
+
+@media screen and (max-width: 1700px) {
+  .player__volumeOnOff {
+    width: 28px;
+    height: 24px;
+    margin-right: 11px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .player__volumeOnOff {
+    width: 22px;
+    height: 19px;
+    margin-right: 17px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .player__volumeOnOff {
+    width: 22px;
+    height: 19px;
+    margin-right: 11px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .player__volumeOnOff {
+    width: 20px;
+    height: 18px;
+    margin-right: 10px;
+  }
+}

@@ -7,9 +7,53 @@
   padding: 11px 43px 12px 43px;
   font-size: 22px;
   font-weight: 700;
-  line-height: 27px;  
+  line-height: 27px;
   text-align: center;
   appearance: none; /* убираем стандартную стрелку */
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+@media screen and (max-width: 1700px) {
+  .player__timer {
+    min-width: 144px;
+    height: 36px;
+    padding: 8px 30px 9px 34px;
+    font-size: 16px;
+    line-height: 20px;
+    margin-right: 25px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .player__timer {
+    min-width: 121px;
+    height: 30px;
+    padding: 7px 20px 5px 23px;
+    font-size: 14px;
+    line-height: 17px;
+    margin-right: 19px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .player__timer {
+    min-width: 121px;
+    height: 30px;
+    padding: 7px 29px 7px 26px;
+    font-size: 13px;
+    line-height: 16px;
+    margin-right: 18px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .player__timer {
+    min-width: 117px;
+    height: 27px;
+    padding: 5px 27px 6px 24px;
+    font-size: 13px;
+    line-height: 16px;
+    margin-right: 16px;
+  }
 }

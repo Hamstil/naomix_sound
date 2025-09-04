@@ -8,3 +8,35 @@
   text-align: left;
   color: #fff;
 }
+
+@media screen and (max-width: 1700px) {
+  .player__timerText {
+    font-size: 15px;
+    line-height: 18px;
+    margin: 0 19px 0 0;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .player__timerText {
+    font-size: 13px;
+    line-height: 16px;
+    margin: 0 15px 0 0;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .player__timerText {
+    font-size: 13px;
+    line-height: 16px;
+    margin: 0 16px 0 0;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .player__timerText {
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0 10px 0 0;
+  }
+}

@@ -13,3 +13,37 @@
   background: url('../../../images/tumb-on.svg') no-repeat center;
   background-size: cover;
 }
+
+@media screen and (max-width: 1700px) {
+  .player__checkmark {
+    width: 36px;
+    height: 19px;
+    margin-right: 22px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .player__checkmark {
+    width: 31px;
+    height: 16px;
+    margin-right: 18px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .player__checkmark {
+    width: 33px;
+    height: 17px;
+    margin-right: 18px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .player__checkmark {
+    width: 30px;
+    height: 16px;
+    margin-right: 12px;
+  }
+}
+
+

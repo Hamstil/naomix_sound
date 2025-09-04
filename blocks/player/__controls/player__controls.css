@@ -3,3 +3,9 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+@media screen and (max-width: 520px) {
+    .player__controls {
+        row-gap: 29px;
+    }
+}
