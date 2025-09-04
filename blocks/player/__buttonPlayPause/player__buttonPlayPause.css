@@ -6,7 +6,18 @@
     border-radius: 50%;
     border: none;
     outline: none;
-    cursor: pointer;
+    cursor: pointer;    
+    transition: transform .3s ease;
+}
+
+.player__buttonPlayPause:hover {    
+    transform: scale(1.03);
+}
+
+.player__buttonPlayPause:active {
+    transform: scale(1.01);
+    background: url('../../../images/pause.svg') no-repeat center;
+    background-size: cover;
 }
 
 @media screen and (max-width: 1700px) {

@@ -8,6 +8,14 @@
   letter-spacing: 0px;
   text-align: left;
   text-decoration: none;
+  background: linear-gradient(#ffffff, #ffffff) no-repeat;
+  background-size: 0% 1px; /* изначально невидимая линия */
+  background-position: bottom left; /* сверху */
+  transition: background-size 0.3s ease;
+}
+
+.contacts__link:hover {
+  background-size: 100% 1px; /* растягиваем линию */
 }
 
 @media screen and (max-width: 1700px) {
