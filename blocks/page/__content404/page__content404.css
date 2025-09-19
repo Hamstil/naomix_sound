@@ -1,0 +1,28 @@
+.page__content404 {
+    margin: 0 145px;
+    padding-bottom: 50px;       
+}
+
+@media screen and (max-width: 1700px) {
+    .page__content404 {
+        margin: 0 77px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .page__content404 {
+        margin: 0 64px;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .page__content404 {
+        margin: 0 48px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .page__content404 {
+        margin: 0 28px;
+    }
+}

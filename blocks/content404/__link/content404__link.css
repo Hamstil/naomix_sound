@@ -1,0 +1,49 @@
+.content404__link {
+  margin: 0;
+  padding: 0;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 34px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  opacity: 1;
+  background: linear-gradient(#ffffff, #ffffff) no-repeat;
+  background-size: 0% 1px; /* изначально невидимая линия */
+  background-position: bottom; /* сверху */
+  transition: background-size 0.3s ease, opacity 0.3s ease;
+}
+
+.content404__link:hover {
+  background-size: 100% 1px; /* растягиваем линию */
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 1700px) {
+  .content404__link {
+    font-size: 23px;
+    line-height: 28px;
+}
+} 
+
+@media screen and (max-width: 1200px) {
+  .content404__link {
+    font-size: 23px;
+    line-height: 28px;
+}
+} 
+
+@media screen and (max-width: 960px) {
+  .content404__link {
+    font-size: 16px;
+    line-height: 20px;
+}
+} 
+
+@media screen and (max-width: 520px) {
+  .content404__link {
+    font-size: 13px;
+    line-height: 16px;
+}
+} 
