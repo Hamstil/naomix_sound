@@ -1,27 +1,28 @@
 .page__content {
-    margin: 0 145px;
+    padding: 0 145px;
+    background: linear-gradient(to bottom , rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
 }
 
 @media screen and (max-width: 1700px) {
     .page__content {
-        margin: 0 77px;
+        padding: 0 77px;
     }
 }
 
 @media screen and (max-width: 1200px) {
     .page__content {
-        margin: 0 64px;
+        padding: 0 64px;
     }
 }
 
 @media screen and (max-width: 960px) {
     .page__content {
-        margin: 0 48px;
+        padding: 0 48px;
     }
 }
 
 @media screen and (max-width: 520px) {
     .page__content {
-        margin: 0 28px;
+        padding: 0 28px;
     }
 }
