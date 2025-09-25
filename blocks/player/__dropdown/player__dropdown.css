@@ -13,6 +13,9 @@
   background: url("../../../images/arr-down.svg") no-repeat right 44px center;
   background-size: 20px; /* меняем размер стрелки */
 }
+.player__dropdown:focus {
+  outline: none;
+}
 
 @media screen and (max-width: 1700px) {
   .player__dropdown {
