@@ -2,7 +2,7 @@
   max-width: 453px;
 }
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1780px) {
   .info__text_width_two {
     max-width: 317px;
   }
@@ -14,7 +14,7 @@
   }
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1060px) {
   .info__text_width_two {
     max-width: 451px;
   }

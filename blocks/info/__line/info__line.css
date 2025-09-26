@@ -4,7 +4,7 @@
   margin-bottom: 27px;
 }
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1780px) {
   .info__line {
     max-width: 141px;
     margin-bottom: 14px;
@@ -18,7 +18,7 @@
   }
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1060px) {
   .info__line {
     display: none;
   }

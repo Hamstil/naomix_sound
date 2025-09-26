@@ -3,6 +3,7 @@
   appearance: none;
   width: 162px;
   height: 3px;
+  transition: transform 0.3s ease;
 }
 
 .player__volume::-webkit-slider-thumb {
@@ -12,8 +13,12 @@
   border-radius: 50%;
   width: 16px;
   height: 16px;
-  background-color: #fff;
-  
+  background-color: #fff;  
+}
+
+.player__volume:focus {
+  outline: none;
+  transform: scale(1.05);
 }
 
 @media screen and (max-width: 1700px) {

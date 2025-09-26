@@ -10,7 +10,7 @@
   color: #fff;
 }
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1780px) {
   .info__list {
     font-size: 14px;
     line-height: 17px;
@@ -24,7 +24,7 @@
   }
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1060px) {
   .info__list {
     font-size: 14px;
     line-height: 17px;

@@ -12,10 +12,13 @@
   appearance: none; /* убираем стандартную стрелку */
   -webkit-appearance: none;
   -moz-appearance: none;
+  transform: scale(1);
+  transition: transform 0.3s ease;
 }
 
 .player__timer:focus {
   outline: none;
+  transform: scale(1.03);
 }
 
 @media screen and (max-width: 1700px) {

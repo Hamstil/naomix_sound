@@ -9,7 +9,7 @@
   color: #fff;
 }
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1780px) {
   .info__title {
     font-size: 20px;
     line-height: 24px;
@@ -25,7 +25,7 @@
   }
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1060px) {
   .info__title {
     font-size: 18px;
     line-height: 22px;

@@ -7,6 +7,11 @@
   border: none;
   outline: none;
   cursor: pointer;
+  transition: transform .3s ease;
+}
+
+.player__volumeOnOff:focus {
+  transform: scale(1.05);
 }
 
 @media screen and (max-width: 1700px) {

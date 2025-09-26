@@ -3,7 +3,7 @@
     margin-bottom: 34px;
 }
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1780px) {
     .info__text_width_three {
         max-width: 290px;
         margin-bottom: 26px;
@@ -17,7 +17,7 @@
     }
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1060px) {
     .info__text_width_three {
         max-width: 447px;
         margin-bottom: 28px;

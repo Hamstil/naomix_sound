@@ -12,9 +12,12 @@
   -moz-appearance: none;
   background: url("../../../images/arr-down.svg") no-repeat right 44px center;
   background-size: 20px; /* меняем размер стрелки */
+  transform: scale(1);
+  transition: transform 0.3s ease;
 }
 .player__dropdown:focus {
   outline: none;
+  transform: scale(1.03);
 }
 
 @media screen and (max-width: 1700px) {

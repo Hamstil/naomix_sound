@@ -35,7 +35,7 @@
 
 @media screen and (max-width: 520px) {
   .donations__card {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 17px;
     margin: 0 12px 0 0;
   }

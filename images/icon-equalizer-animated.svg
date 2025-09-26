@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="9.8779mm" height="9.1722mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 50.47 46.87"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:black;fill-rule:nonzero}
+   ]]>
+  </style>
+ </defs>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  
+  <!-- Первый столбик (левый) -->
+  <rect class="fil0" x="0" y="46.87" width="7.21" height="0">
+    <animate attributeName="height" values="0;10;30;46.87;30;10;0" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+    <animate attributeName="y" values="46.87;36.87;16.87;0;16.87;36.87;46.87" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+  </rect>
+  
+  <!-- Второй столбик -->
+  <rect class="fil0" x="14.42" y="46.87" width="7.21" height="0">
+    <animate attributeName="height" values="0;5;15;30.65;15;5;0" dur="1s" repeatCount="indefinite" begin="0.2s"/>
+    <animate attributeName="y" values="46.87;41.87;31.87;16.22;31.87;41.87;46.87" dur="1s" repeatCount="indefinite" begin="0.2s"/>
+  </rect>
+  
+  <!-- Третий столбик -->
+  <rect class="fil0" x="28.84" y="46.87" width="7.21" height="0">
+    <animate attributeName="height" values="0;8;20;19.83;20;8;0" dur="0.9s" repeatCount="indefinite" begin="0.4s"/>
+    <animate attributeName="y" values="46.87;38.87;26.87;27.04;26.87;38.87;46.87" dur="0.9s" repeatCount="indefinite" begin="0.4s"/>
+  </rect>
+  
+  <!-- Четвертый столбик (правый) -->
+  <rect class="fil0" x="43.26" y="46.87" width="7.21" height="0">
+    <animate attributeName="height" values="0;12;25;39.66;25;12;0" dur="1.1s" repeatCount="indefinite" begin="0.1s"/>
+    <animate attributeName="y" values="46.87;34.87;21.87;7.21;21.87;34.87;46.87" dur="1.1s" repeatCount="indefinite" begin="0.1s"/>
+  </rect>
+ </g>
+</svg>
