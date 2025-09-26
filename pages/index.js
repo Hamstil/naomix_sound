@@ -6,6 +6,7 @@ const selector_BG_Music = document.querySelector('.player__dropdown'); // Вып
 const playBtn = document.querySelector('.player__buttonPlayPause'); // Кнопка Play/Pause
 const volumeSlider = document.querySelector('.player__volume'); // Слайдер громкости
 const timerInput = document.querySelector('.player__timer'); // Время таймера список
+const iconEQ = document.querySelector('.player__icon-eq'); // Иконка EQ
 
 // Web Audio API
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -53,6 +54,7 @@ async function startSound() {
     sourceNode.start();
 
     playBtn.style.backgroundImage = "url('../../../images/pause.svg')";
+    iconEQ.setAttribute('src', './images/icon-equalizer-animated.svg');
     isPlaying = true;
 
     // Плавный fade-in
@@ -79,7 +81,7 @@ function stopSound(immediate = false) {
         sourceNode.stop();
         sourceNode.disconnect();
         sourceNode = null;
-        playBtn.style.backgroundImage = "url('../../../images/play.svg')";
+        playBtn.style.backgroundImage = "url('../../../images/play.svg')";        
         isPlaying = false;
         return;
     }
@@ -96,6 +98,7 @@ function stopSound(immediate = false) {
             sourceNode = null;
         }
         playBtn.style.backgroundImage = "url('../../../images/play.svg')";
+        iconEQ.setAttribute('src', './images/icon-equalizer.svg');
         isPlaying = false;
     }, 2000);
 }
