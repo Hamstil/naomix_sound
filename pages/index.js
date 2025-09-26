@@ -158,10 +158,42 @@ selector_BG_Music.addEventListener('change', function () {
 });
 
 // Функция для применения нового фона
-function applyBackgroundImage(imageUrl) {  
-  backgroundImagePage.style.backgroundImage = `url('${imageUrl}')`;
+async function applyBackgroundImage(imageUrl) {
+  try {
+    // Ждем загрузки нового изображения
+    await preloadImage(imageUrl);
+    
+    // Плавное исчезновение
+    backgroundImagePage.style.opacity = '0';
+    
+    // Ждем завершения анимации opacity
+    await wait(200); // Совпадает с временем transition
+    
+    // Меняем фон
+    backgroundImagePage.style.backgroundImage = `url('${imageUrl}')`;
+    
+    // Плавное появление
+    backgroundImagePage.style.opacity = '1';
+    
+  } catch (error) {
+    console.error('Ошибка загрузки фона:', error);
+    backgroundImagePage.style.opacity = '1'; // Возвращаем видимость
+  }
 }
 
+// Вспомогательные функции
+function preloadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = () => reject(new Error(`Не удалось загрузить: ${url}`));
+    img.src = url;
+  });
+}
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
  
 // Копирования текста в буфер обмена (номер карты)
 donationsCardBtn.addEventListener("click", async function () {
