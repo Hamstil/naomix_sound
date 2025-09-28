@@ -18,6 +18,19 @@ let sourceNode = null;      // проигрыватель
 let isPlaying = false;
 let timerId = null;
 
+// ===== Разблокировка AudioContext для iOS =====
+function unlockAudioContext(ctx) {
+  if (ctx.state === "suspended") {
+    const events = ["touchstart", "touchend", "click"];
+    const unlock = () => {
+      ctx.resume().then(() => console.log("AudioContext разблокирован!"));
+      events.forEach(e => document.removeEventListener(e, unlock));
+    };
+    events.forEach(e => document.addEventListener(e, unlock, false));
+  }
+}
+unlockAudioContext(audioCtx);
+
 // Список треков
 const sounds = {
     "rain_in_the_forest": "sounds/rain_in_the_forest.mp3",
