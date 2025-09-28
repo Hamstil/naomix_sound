@@ -22,7 +22,7 @@ let timerId = null;
 const sounds = {
     "rain_in_the_forest": '../sounds/rain_in_the_forest.mp3',
     "the_sound_of_rain": '../sounds/the_sound_of_rain.mp3',
-    "glucophone": '../sounds/glucophone.mp3',
+    "glucophone": '../sounds/Glucophone_(sleep_melody)_01.mp3',
     "the_fire_in_the_oven": '../sounds/the_fire_in_the_oven.mp3',
     "fire_in_the_street": '../sounds/fire_in_the_street.mp3',
     "the_noise_of_the_forest": '../sounds/the_noise_of_the_forest.mp3',

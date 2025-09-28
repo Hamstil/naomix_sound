@@ -7,6 +7,7 @@
   line-height: 27px;
   letter-spacing: 0px;
   text-align: left;
+  cursor: pointer;
   appearance: none; /* убираем стандартную стрелку */
   -webkit-appearance: none;
   -moz-appearance: none;

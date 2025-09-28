@@ -9,6 +9,7 @@
   font-weight: 700;
   line-height: 27px;
   text-align: center;
+  cursor: pointer;
   appearance: none; /* убираем стандартную стрелку */
   -webkit-appearance: none;
   -moz-appearance: none;

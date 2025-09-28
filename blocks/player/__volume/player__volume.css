@@ -1,6 +1,7 @@
 .player__volume {
   -webkit-appearance: none; /* Скрываем дефолтный вид */
   appearance: none;
+  cursor: pointer;
   width: 162px;
   height: 3px;
   transition: transform 0.3s ease;
