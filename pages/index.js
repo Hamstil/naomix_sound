@@ -140,7 +140,7 @@ const backgroundsImagesMap = {
   'rain_in_the_forest': '/naomix_sound/images/img_bg/rain_in_the_forest.webp',
   'the_sound_of_rain': '/naomix_sound/images/img_bg/noise_of_rain.webp',
   'glucophone': '/naomix_sound/images/img_bg/glucophone.webp',
-  'the_fire_in_the_oven': './naomix_sound/images/img_bg/the_fire_in_the_oven.webp',
+  'the_fire_in_the_oven': 'images/img_bg/the_fire_in_the_oven.webp',
   'fire_in_the_street': '/naomix_sound/images/img_bg/fire_on_the_street.webp',
   'the_noise_of_the_forest': '/naomix_sound/images/img_bg/noise_forests.webp',
   'wave_noise': '/naomix_sound/images/img_bg/noise_waves.webp',
