@@ -69,8 +69,8 @@ async function startSound() {
     sourceNode.connect(gainNode);
     sourceNode.start();
 
-    playBtn.style.backgroundImage = "url('/naomix_sound/images/pause.svg')";
-    iconEQ.setAttribute('src', '/naomix_sound/images/icon-equalizer-animated.svg');
+    playBtn.style.backgroundImage = "url('images/pause.svg')";
+    iconEQ.setAttribute('src', 'images/icon-equalizer-animated.svg');
     isPlaying = true;
 
     // Плавный fade-in
@@ -97,7 +97,7 @@ function stopSound(immediate = false) {
         sourceNode.stop();
         sourceNode.disconnect();
         sourceNode = null;
-        playBtn.style.backgroundImage = "url('/naomix_sound/images/play.svg')";
+        playBtn.style.backgroundImage = "url('images/play.svg')";
         isPlaying = false;
         return;
     }
@@ -113,8 +113,8 @@ function stopSound(immediate = false) {
             sourceNode.disconnect();
             sourceNode = null;
         }
-        playBtn.style.backgroundImage = "url('/naomix_sound/images/play.svg')";
-        iconEQ.setAttribute('src', '/naomix_sound/images/icon-equalizer.svg');
+        playBtn.style.backgroundImage = "url('images/play.svg')";
+        iconEQ.setAttribute('src', 'images/icon-equalizer.svg');
         isPlaying = false;
     }, 2000);
 }
@@ -200,9 +200,9 @@ donationsCardBtn.addEventListener("click", async function () {
 
   try {
     await navigator.clipboard.writeText(textCard.trim());
-    donationsCardBtn.setAttribute("src", "./images/copy-ok.svg");
+    donationsCardBtn.setAttribute("src", "images/copy-ok.svg");
     setTimeout(() => {
-      donationsCardBtn.setAttribute("src", "./images/copy.svg");
+      donationsCardBtn.setAttribute("src", "images/copy.svg");
     }, 2000);
   } catch (err) {
     console.error("Ошибка копирования: ", err);
@@ -249,11 +249,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (currentVolume === 0) {
       volumeButton.style.backgroundImage =
-        "url('./images/sound-off.svg')";
+        "url('images/sound-off.svg')";
       isMuted = true;
     } else {
       volumeButton.style.backgroundImage =
-        "url('./images/icon-vol-sound.svg')";
+        "url('images/icon-vol-sound.svg')";
       isMuted = false;
       previousVolume = currentVolume;
     }
