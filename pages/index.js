@@ -7,29 +7,6 @@ const volumeSlider = document.querySelector('.player__volume');
 const timerInput = document.querySelector('.player__timer');
 const iconEQ = document.querySelector('.player__icon-eq');
 
-// ===== AudioContext =====
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const gainNode = audioCtx.createGain();
-gainNode.connect(audioCtx.destination);
-
-let currentBuffer = null;
-let sourceNode = null;
-let isPlaying = false;
-let timerId = null;
-
-// ===== Разблокировка AudioContext для iOS =====
-function unlockAudioContext(ctx) {
-  if (ctx.state === "suspended") {
-    const events = ["touchstart", "touchend", "click"];
-    const unlock = () => {
-      ctx.resume().then(() => console.log("AudioContext разблокирован!"));
-      events.forEach(e => document.removeEventListener(e, unlock));
-    };
-    events.forEach(e => document.addEventListener(e, unlock, false));
-  }
-}
-unlockAudioContext(audioCtx);
-
 // ===== Списки звуков и фоновых изображений =====
 const sounds = {
   "rain_in_the_forest": "sounds/rain_in_the_forest.mp3",
@@ -61,6 +38,24 @@ const backgroundsImagesMap = {
   "in_the_cafe": "images/img_bg/in_cafe.webp",
 };
 
+// ===== AudioContext =====
+let audioCtx = null;
+let gainNode = null;
+let sourceNode = null;
+let currentBuffer = null;
+let isPlaying = false;
+let timerId = null;
+
+// ===== Инициализация AudioContext при первом взаимодействии =====
+function initAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioCtx.createGain();
+    gainNode.connect(audioCtx.destination);
+  }
+}
+
+
 // ===== Загрузка трека =====
 async function loadSound(url) {
   const response = await fetch(url);
@@ -85,7 +80,7 @@ async function startSound() {
   isPlaying = true;
 
   gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-  gainNode.gain.linearRampToValueAtTime(volumeSlider.value / 100, audioCtx.currentTime + 2);
+  gainNode.gain.linearRampToValueAtTime(volumeSlider.value / 100, audioCtx.currentTime + 1.5);
 
   const timerMinutes = parseInt(timerInput.value, 10);
   if (timerMinutes > 0) {
@@ -104,13 +99,14 @@ function stopSound(immediate = false) {
     sourceNode.disconnect();
     sourceNode = null;
     playBtn.style.backgroundImage = "url('images/play.svg')";
+    iconEQ.setAttribute('src', 'images/icon-equalizer.svg');
     isPlaying = false;
     return;
   }
 
   gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
   gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
-  gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
+  gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
 
   setTimeout(() => {
     if (sourceNode) {
@@ -121,11 +117,12 @@ function stopSound(immediate = false) {
     playBtn.style.backgroundImage = "url('images/play.svg')";
     iconEQ.setAttribute('src', 'images/icon-equalizer.svg');
     isPlaying = false;
-  }, 2000);
+  }, 1500);
 }
 
 // ===== Смена трека =====
 selector_BG_Music.addEventListener('change', async () => {
+  initAudioContext();
   const selected = selector_BG_Music.value;
   currentBuffer = await loadSound(sounds[selected]);
   applyBackgroundImage(backgroundsImagesMap[selected]);
@@ -134,6 +131,13 @@ selector_BG_Music.addEventListener('change', async () => {
 
 // ===== Кнопка Play/Pause =====
 playBtn.addEventListener('click', async () => {
+  initAudioContext();
+
+  // Разблокировка iOS / Android AudioContext
+  if (audioCtx.state === "suspended") {
+    await audioCtx.resume();
+  }
+
   const selected = selector_BG_Music.value;
   if (!isPlaying) {
     if (!currentBuffer) currentBuffer = await loadSound(sounds[selected]);
@@ -145,7 +149,9 @@ playBtn.addEventListener('click', async () => {
 
 // ===== Громкость =====
 volumeSlider.addEventListener('input', () => {
-  gainNode.gain.setValueAtTime(volumeSlider.value / 100, audioCtx.currentTime);
+  if (gainNode) {
+    gainNode.gain.setValueAtTime(volumeSlider.value / 100, audioCtx.currentTime);
+  }
 });
 
 // ===== Смена фона =====
@@ -190,51 +196,38 @@ donationsCardBtn.addEventListener("click", async function () {
 });
 
 
-// Реализация влючения и выключение звука
+// ===== Включение/выключение звука =====
 document.addEventListener("DOMContentLoaded", function () {
-  const volumeButton = document.querySelector(".player__volumeOnOff"); // Кнопка включения и выключения звука
-  const volumeInput = document.querySelector(".player__volume"); // Ползунок звука
-  const volumeLabel = document.querySelector(".player__label_disabled"); // Метка для отображения значения звука
+  const volumeButton = document.querySelector(".player__volumeOnOff");
+  const volumeInput = document.querySelector(".player__volume");
+  const volumeLabel = document.querySelector(".player__label_disabled");
 
-  // Отмена поведения по умолчанию для метки
-  volumeLabel.addEventListener("click", (event) => {
-    event.preventDefault();
-  });
+  volumeLabel.addEventListener("click", (event) => event.preventDefault());
 
   let previousVolume = parseInt(volumeInput.value);
   let isMuted = false;
 
   volumeButton.addEventListener("click", function () {
     if (isMuted) {
-      // Включаем звук, возвращаем предыдущее значение
       volumeInput.value = previousVolume;
-      volumeButton.style.backgroundImage =
-        "url('./images/icon-vol-sound.svg')";
+      volumeButton.style.backgroundImage = "url('./images/icon-vol-sound.svg')";
     } else {
       previousVolume = parseInt(volumeInput.value);
       volumeInput.value = 0;
-      volumeButton.style.backgroundImage =
-        "url('./images/sound-off.svg')";
+      volumeButton.style.backgroundImage = "url('./images/sound-off.svg')";
     }
-
     isMuted = !isMuted;
-
-    // Триггер события для обновления состояния звука
     volumeInput.dispatchEvent(new Event("input"));
     volumeInput.dispatchEvent(new Event("change"));
   });
 
-  // Обновляем иконку кнопки при изменении значения ползунка
   volumeInput.addEventListener("input", function () {
     const currentVolume = parseInt(this.value);
-
     if (currentVolume === 0) {
-      volumeButton.style.backgroundImage =
-        "url('images/sound-off.svg')";
+      volumeButton.style.backgroundImage = "url('images/sound-off.svg')";
       isMuted = true;
     } else {
-      volumeButton.style.backgroundImage =
-        "url('images/icon-vol-sound.svg')";
+      volumeButton.style.backgroundImage = "url('images/icon-vol-sound.svg')";
       isMuted = false;
       previousVolume = currentVolume;
     }
