@@ -20,18 +20,34 @@ let timerId = null;
 
 // Список треков
 const sounds = {
-    "rain_in_the_forest": '/naomix_sound/sounds/rain_in_the_forest.mp3',
-    "the_sound_of_rain": '/naomix_sound/sounds/the_sound_of_rain.mp3',
-    "glucophone": '/naomix_sound/sounds/Glucophone_(sleep_melody)_01.mp3',
-    "the_fire_in_the_oven": '/naomix_sound/sounds/the_fire_in_the_oven.mp3',
-    "fire_in_the_street": '/naomix_sound/sounds/fire_in_the_street.mp3',
-    "the_noise_of_the_forest": '/naomix_sound/sounds/the_noise_of_the_forest.mp3',
-    "wave_noise": '/naomix_sound/sounds/wave_noise.mp3',
-    "the_sound_of_the_sea": '/naomix_sound/sounds/the_sound_of_the_sea.mp3',
-    "the_sound_of_the_spring": '/naomix_sound/sounds/the_sound_of_the_spring.mp3',
-    "crickets": '/naomix_sound/sounds/crickets.mp3',
-    "cicadas": '/naomix_sound/sounds/cicadas.mp3',
-    "in_the_cafe": '/naomix_sound/sounds/in_the_cafe.mp3',
+    "rain_in_the_forest": "sounds/rain_in_the_forest.mp3",
+    "the_sound_of_rain": "sounds/the_sound_of_rain.mp3",
+    "glucophone": "sounds/Glucophone_(sleep_melody)_01.mp3",
+    "the_fire_in_the_oven": "sounds/the_fire_in_the_oven.mp3",
+    "fire_in_the_street": "sounds/fire_in_the_street.mp3",
+    "the_noise_of_the_forest": "sounds/the_noise_of_the_forest.mp3",
+    "wave_noise": "sounds/wave_noise.mp3",
+    "the_sound_of_the_sea": "sounds/the_sound_of_the_sea.mp3",
+    "the_sound_of_the_spring": "sounds/the_sound_of_the_spring.mp3",
+    "crickets": "sounds/crickets.mp3",
+    "cicadas": "sounds/cicadas.mp3",
+    "in_the_cafe": "sounds/in_the_cafe.mp3",
+};
+
+// Карта фоновых изображений для смены фона
+const backgroundsImagesMap = {
+  "rain_in_the_forest": "images/img_bg/rain_in_the_forest.webp",
+  "the_sound_of_rain": "images/img_bg/noise_of_rain.webp",
+  "glucophone": "images/img_bg/glucophone.webp",
+  "the_fire_in_the_oven": "images/img_bg/the_fire_in_the_oven.webp",
+  "fire_in_the_street": "images/img_bg/fire_on_the_street.webp",
+  "the_noise_of_the_forest": "images/img_bg/noise_forests.webp",
+  "wave_noise": "images/img_bg/noise_waves.webp",
+  "the_sound_of_the_sea": "images/img_bg/noise_of_the_sea.webp",
+  "the_sound_of_the_spring": "images/img_bg/sound_of_the_spring.webp",
+  "crickets": "images/img_bg/crickets_and_birds.webp",
+  "cicadas": "images/img_bg/tsykady.webp",
+  "in_the_cafe": "images/img_bg/in_cafe.webp",
 };
 
 // Загрузка трека
@@ -133,23 +149,6 @@ playBtn.addEventListener('click', () => {
 volumeSlider.addEventListener('input', () => {
     gainNode.gain.setValueAtTime(volumeSlider.value / 100, audioCtx.currentTime);
 });
-
-
-// Карта фоновых изображений для смены фона
-const backgroundsImagesMap = {
-  'rain_in_the_forest': '/naomix_sound/images/img_bg/rain_in_the_forest.webp',
-  'the_sound_of_rain': '/naomix_sound/images/img_bg/noise_of_rain.webp',
-  'glucophone': '/naomix_sound/images/img_bg/glucophone.webp',
-  'the_fire_in_the_oven': 'images/img_bg/the_fire_in_the_oven.webp',
-  'fire_in_the_street': '/naomix_sound/images/img_bg/fire_on_the_street.webp',
-  'the_noise_of_the_forest': '/naomix_sound/images/img_bg/noise_forests.webp',
-  'wave_noise': '/naomix_sound/images/img_bg/noise_waves.webp',
-  'the_sound_of_the_sea': '/naomix_sound/images/img_bg/noise_of_the_sea.webp',
-  'the_sound_of_the_spring': '/naomix_sound/images/img_bg/sound_of_the_spring.webp',
-  'crickets': '/naomix_sound/images/img_bg/crickets_and_birds.webp',
-  'cicadas': '/naomix_sound/images/img_bg/tsykady.webp',
-  'in_the_cafe': '/naomix_sound/images/img_bg/in_cafe.webp',
-};
 
 // Смена фона при выборе в выпадающем списке
 selector_BG_Music.addEventListener('change', function () {
