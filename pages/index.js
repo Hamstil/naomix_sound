@@ -8,180 +8,141 @@ const backgroundImagePage = document.querySelector('.page');
 
 // ===== Списки звуков и фоновых изображений =====
 const sounds = {
-  "rain_in_the_forest": "sounds/rain_in_the_forest.mp3",
-  "the_sound_of_rain": "sounds/the_sound_of_rain.mp3",
-  "glucophone": "sounds/Glucophone_(sleep_melody)_01.mp3",
-  "the_fire_in_the_oven": "sounds/the_fire_in_the_oven.mp3",
-  "fire_in_the_street": "sounds/fire_in_the_street.mp3",
-  "the_noise_of_the_forest": "sounds/the_noise_of_the_forest.mp3",
-  "wave_noise": "sounds/wave_noise.mp3",
-  "the_sound_of_the_sea": "sounds/the_sound_of_the_sea.mp3",
-  "the_sound_of_the_spring": "sounds/the_sound_of_the_spring.mp3",
-  "crickets": "sounds/crickets.mp3",
-  "cicadas": "sounds/cicadas.mp3",
-  "in_the_cafe": "sounds/in_the_cafe.mp3",
+  rain_in_the_forest: "sounds/rain_in_the_forest.mp3",
+  the_sound_of_rain: "sounds/the_sound_of_rain.mp3",
+  glucophone: "sounds/Glucophone_(sleep_melody)_01.mp3",
+  the_fire_in_the_oven: "sounds/the_fire_in_the_oven.mp3",
+  fire_in_the_street: "sounds/fire_in_the_street.mp3",
+  the_noise_of_the_forest: "sounds/the_noise_of_the_forest.mp3",
+  wave_noise: "sounds/wave_noise.mp3",
+  the_sound_of_the_sea: "sounds/the_sound_of_the_sea.mp3",
+  the_sound_of_the_spring: "sounds/the_sound_of_the_spring.mp3",
+  crickets: "sounds/crickets.mp3",
+  cicadas: "sounds/cicadas.mp3",
+  in_the_cafe: "sounds/in_the_cafe.mp3",
 };
 
 const backgroundsImagesMap = {
-  "rain_in_the_forest": "images/img_bg/rain_in_the_forest.webp",
-  "the_sound_of_rain": "images/img_bg/noise_of_rain.webp",
-  "glucophone": "images/img_bg/glucophone.webp",
-  "the_fire_in_the_oven": "images/img_bg/the_fire_in_the_oven.webp",
-  "fire_in_the_street": "images/img_bg/fire_on_the_street.webp",
-  "the_noise_of_the_forest": "images/img_bg/noise_forests.webp",
-  "wave_noise": "images/img_bg/noise_waves.webp",
-  "the_sound_of_the_sea": "images/img_bg/noise_of_the_sea.webp",
-  "the_sound_of_the_spring": "images/img_bg/sound_of_the_spring.webp",
-  "crickets": "images/img_bg/crickets_and_birds.webp",
-  "cicadas": "images/img_bg/tsykady.webp",
-  "in_the_cafe": "images/img_bg/in_cafe.webp",
+  rain_in_the_forest: "images/img_bg/rain_in_the_forest.webp",
+  the_sound_of_rain: "images/img_bg/noise_of_rain.webp",
+  glucophone: "images/img_bg/glucophone.webp",
+  the_fire_in_the_oven: "images/img_bg/the_fire_in_the_oven.webp",
+  fire_in_the_street: "images/img_bg/fire_on_the_street.webp",
+  the_noise_of_the_forest: "images/img_bg/noise_forests.webp",
+  wave_noise: "images/img_bg/noise_waves.webp",
+  the_sound_of_the_sea: "images/img_bg/noise_of_the_sea.webp",
+  the_sound_of_the_spring: "images/img_bg/sound_of_the_spring.webp",
+  crickets: "images/img_bg/crickets_and_birds.webp",
+  cicadas: "images/img_bg/tsykady.webp",
+  in_the_cafe: "images/img_bg/in_cafe.webp",
 };
 
-// ===== Audio =====
-let audioCtx = null;
-let gainNode = null;
-let currentBuffer = null;
-let sourceNode = null;
+let audio = null;
 let isPlaying = false;
 let timerId = null;
-let isPreloaded = false; // уже ли все звуки в памяти
+let fadeInterval = null;
 
-// ===== Карта буферов =====
-const audioBuffers = {}; // { key: AudioBuffer }
 
-// ===== Инициализация AudioContext =====
-function initAudioContext() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    gainNode = audioCtx.createGain();
-    gainNode.connect(audioCtx.destination);
+// ===== Создание нового Audio =====
+function setTrack(name) {
+  if (audio) {
+    audio.pause();
+    audio = null;
   }
+
+  audio = new Audio(sounds[name]);
+  audio.loop = true;
+  audio.volume = 0; // начинаем с нуля для fade-in
+  applyBackgroundImage(backgroundsImagesMap[name]);
 }
 
-// ===== Загрузка трека в буфер =====
-async function loadSound(url) {
-  const response = await fetch(url);
-  const arrayBuffer = await response.arrayBuffer();
-  return await audioCtx.decodeAudioData(arrayBuffer);
-}
+// ===== Fade-in =====
+function fadeIn(targetVolume, duration = 1500) {
+  clearInterval(fadeInterval);
+  const step = 50; // каждые 50мс
+  const increment = targetVolume / (duration / step);
 
-// ===== Предзагрузка всех звуков =====
-async function preloadAllSounds() {
-  if (isPreloaded) return;
-  const entries = Object.entries(sounds);
-  for (const [key, url] of entries) {
-    try {
-      audioBuffers[key] = await loadSound(url);
-      console.log(`Звук ${key} предзагружен`);
-    } catch (e) {
-      console.error(`Ошибка загрузки ${key}:`, e);
+  fadeInterval = setInterval(() => {
+    if (!audio) return clearInterval(fadeInterval);
+    if (audio.volume + increment >= targetVolume) {
+      audio.volume = targetVolume;
+      clearInterval(fadeInterval);
+    } else {
+      audio.volume += increment;
     }
-  }
-  isPreloaded = true;
+  }, step);
 }
 
-// ===== Старт звука =====
-function startSound() {
-  if (!currentBuffer || !audioCtx) return;
+// ===== Fade-out =====
+function fadeOut(duration = 1500, callback) {
+  clearInterval(fadeInterval);
+  const step = 50;
+  const decrement = audio.volume / (duration / step);
 
-  stopSound(true);
-
-  sourceNode = audioCtx.createBufferSource();
-  sourceNode.buffer = currentBuffer;
-  sourceNode.loop = true;
-  sourceNode.connect(gainNode);
-  sourceNode.start(0);
-
-  playBtn.style.backgroundImage = "url('images/pause.svg')";
-  iconEQ.setAttribute('src', 'images/icon-equalizer-animated.svg');
-  isPlaying = true;
-
-  // fade-in
-  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-  gainNode.gain.linearRampToValueAtTime(volumeSlider.value / 100, audioCtx.currentTime + 1.5);
-
-  // таймер авто-остановки
-  const timerMinutes = parseInt(timerInput.value, 10);
-  if (timerMinutes > 0) {
-    clearTimeout(timerId);
-    timerId = setTimeout(() => stopSound(), timerMinutes * 60 * 1000);
-  }
-}
-
-// ===== Остановка =====
-function stopSound(immediate = false) {
-  if (!sourceNode) return;
-  clearTimeout(timerId);
-
-  if (immediate) {
-    sourceNode.stop();
-    sourceNode.disconnect();
-    sourceNode = null;
-    playBtn.style.backgroundImage = "url('images/play.svg')";
-    iconEQ.setAttribute('src', 'images/icon-equalizer.svg');
-    isPlaying = false;
-    return;
-  }
-
-  gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
-  gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
-  gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
-
-  setTimeout(() => {
-    if (sourceNode) {
-      sourceNode.stop();
-      sourceNode.disconnect();
-      sourceNode = null;
+  fadeInterval = setInterval(() => {
+    if (!audio) return clearInterval(fadeInterval);
+    if (audio.volume - decrement <= 0) {
+      audio.volume = 0;
+      clearInterval(fadeInterval);
+      if (callback) callback();
+    } else {
+      audio.volume -= decrement;
     }
-    playBtn.style.backgroundImage = "url('images/play.svg')";
-    iconEQ.setAttribute('src', 'images/icon-equalizer.svg');
-    isPlaying = false;
-  }, 1500);
+  }, step);
 }
 
-// ===== Смена трека =====
-selector_BG_Music.addEventListener('change', async () => {
-  initAudioContext();
-  const selected = selector_BG_Music.value;
-
-  // берем из предзагруженных буферов
-  currentBuffer = audioBuffers[selected] || null;
-  applyBackgroundImage(backgroundsImagesMap[selected]);
-
-  if (isPlaying) startSound();
-});
-
-// ===== Кнопка Play/Pause =====
-playBtn.addEventListener('click', async () => {
-  initAudioContext();
-
-  if (audioCtx.state === "suspended") {
-    await audioCtx.resume();
-  }
-
-  // при первом нажатии предзагружаем все звуки
-  if (!isPreloaded) {
-    await preloadAllSounds();
-    // выбрать текущий трек
-    const selected = selector_BG_Music.value;
-    currentBuffer = audioBuffers[selected] || null;
-  }
-
+// ===== Play/Pause =====
+playBtn.addEventListener("click", () => {
   if (!isPlaying) {
-    startSound();
+    if (!audio) setTrack(selector_BG_Music.value);
+
+    audio.play().then(() => {
+      isPlaying = true;
+      playBtn.textContent = "⏸";
+      iconEQ.src = "images/icon-equalizer-animated.svg";
+
+      fadeIn(volumeSlider.value / 100, 2000);
+
+      const timerMinutes = parseInt(timerInput.value, 10);
+      if (timerMinutes > 0) {
+        clearTimeout(timerId);
+        timerId = setTimeout(() => stopSound(), timerMinutes * 60 * 1000);
+      }
+    }).catch(err => console.error("Ошибка воспроизведения:", err));
   } else {
     stopSound();
   }
 });
 
+// ===== Остановка =====
+function stopSound() {
+  if (!audio) return;
+  fadeOut(2000, () => {
+    audio.pause();
+    audio.currentTime = 0;
+    isPlaying = false;
+    playBtn.textContent = "▶";
+    iconEQ.src = "images/icon-equalizer.svg";
+    clearTimeout(timerId);
+  });
+}
+
 // ===== Громкость =====
-volumeSlider.addEventListener('input', () => {
-  if (gainNode) {
-    gainNode.gain.setValueAtTime(volumeSlider.value / 100, audioCtx.currentTime);
+volumeSlider.addEventListener("input", () => {
+  if (audio) audio.volume = volumeSlider.value / 100;
+});
+
+// ===== Смена трека =====
+selector_BG_Music.addEventListener("change", () => {
+  const wasPlaying = isPlaying;
+  setTrack(selector_BG_Music.value);
+  if (wasPlaying) {
+    audio.play();
+    fadeIn(volumeSlider.value / 100, 2000);
   }
 });
 
-// ===== Смена фона =====
+// ===== Фон =====
 async function applyBackgroundImage(imageUrl) {
   try {
     await preloadImage(imageUrl);
@@ -191,7 +152,6 @@ async function applyBackgroundImage(imageUrl) {
     backgroundImagePage.style.opacity = '1';
   } catch (err) {
     console.error('Ошибка загрузки фона:', err);
-    backgroundImagePage.style.opacity = '1';
   }
 }
 
@@ -207,5 +167,9 @@ function preloadImage(url) {
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+// ===== Установить первый трек при загрузке =====
+setTrack(selector_BG_Music.value);
+
 
 
