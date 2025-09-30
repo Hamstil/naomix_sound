@@ -126,22 +126,26 @@ function stopSound(immediate = false) {
   if (!audio) return;
   clearTimeout(timerId);
 
-  if (immediate) {
+  const stopAudio = () => {
+    // Полная остановка и очистка
     audio.pause();
     audio.currentTime = 0;
-    isPlaying = false;
-    playBtn.style.backgroundImage = "url('images/play.svg')";
-    iconEQ.src = "images/icon-equalizer.svg";
-    return;
-  }
 
-  fadeOut(2000, () => {
-    audio.pause();
-    audio.currentTime = 0;
+    // Для iOS важно также сбросить источник в некоторых случаях
+    if (audio.src) {
+      audio.src = '';
+    }
+
     isPlaying = false;
     playBtn.style.backgroundImage = "url('images/play.svg')";
     iconEQ.src = "images/icon-equalizer.svg";
-  });
+  };
+
+  if (immediate) {
+    stopAudio();
+  } else {
+    fadeOut(2000, stopAudio);
+  }
 }
 
 // ===== Play/Pause кнопка =====
