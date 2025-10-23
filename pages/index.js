@@ -1,264 +1,299 @@
-// Элементы
-const donationsCardBtn = document.querySelector('.donations__icon-copy'); // Кнопка копирования номера карты
-const backgroundImagePage = document.querySelector('.page'); // Область с фоновой картинкой
+class RelaxPlayer {
+  constructor() {
+    this.audio = new Audio();
+    this.isPlaying = false;
+    this.isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    this.currentSound = null;
+    this.timer = null;
+    this.volume = 0.5;
+    this.fadeInterval = null;
+    this.fadeDuration = 1000; // Длительность затухания/нарастания в мс
 
-const selector_BG_Music = document.querySelector('.player__dropdown'); // Выпадающий список фоновых изображений и музыки
-const playBtn = document.querySelector('.player__buttonPlayPause'); // Кнопка Play/Pause
-const volumeSlider = document.querySelector('.player__volume'); // Слайдер громкости
-const timerInput = document.querySelector('.player__timer'); // Время таймера список
-const iconEQ = document.querySelector('.player__icon-eq'); // Иконка EQ
+    this.initElements();
+    this.bindEvents();
+    this.setupAudio();
 
-// Web Audio API
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let gainNode = audioCtx.createGain(); // громкость
-gainNode.connect(audioCtx.destination);
-
-let currentBuffer = null;   // буфер трека
-let sourceNode = null;      // проигрыватель
-let isPlaying = false;
-let timerId = null;
-
-// Список треков
-const sounds = {
-    "rain_in_the_forest": '/naomix_sound/sounds/rain_in_the_forest.mp3',
-    "the_sound_of_rain": '/naomix_sound/sounds/the_sound_of_rain.mp3',
-    "glucophone": '/naomix_sound/sounds/Glucophone_(sleep_melody)_01.mp3',
-    "the_fire_in_the_oven": '/naomix_sound/sounds/the_fire_in_the_oven.mp3',
-    "fire_in_the_street": '/naomix_sound/sounds/fire_in_the_street.mp3',
-    "the_noise_of_the_forest": '/naomix_sound/sounds/the_noise_of_the_forest.mp3',
-    "wave_noise": '/naomix_sound/sounds/wave_noise.mp3',
-    "the_sound_of_the_sea": '/naomix_sound/sounds/the_sound_of_the_sea.mp3',
-    "the_sound_of_the_spring": '/naomix_sound/sounds/the_sound_of_the_spring.mp3',
-    "crickets": '/naomix_sound/sounds/crickets.mp3',
-    "cicadas": '/naomix_sound/sounds/cicadas.mp3',
-    "in_the_cafe": '/naomix_sound/sounds/in_the_cafe.mp3',
-};
-
-// Загрузка трека
-async function loadSound(url) {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    return await audioCtx.decodeAudioData(arrayBuffer);
-}
-
-// Запуск
-async function startSound() {
-    if (!currentBuffer) return;
-
-    stopSound(true); // если что-то играет — стопаем без фейда
-
-    sourceNode = audioCtx.createBufferSource();
-    sourceNode.buffer = currentBuffer;
-    sourceNode.loop = true; // бесшовный луп
-    sourceNode.connect(gainNode);
-    sourceNode.start();
-
-    playBtn.style.backgroundImage = "url('/naomix_sound/images/pause.svg')";
-    iconEQ.setAttribute('src', '/naomix_sound/images/icon-equalizer-animated.svg');
-    isPlaying = true;
-
-    // Плавный fade-in
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(volumeSlider.value / 100, audioCtx.currentTime + 2);
-
-    // Таймер
-    const timerMinutes = parseInt(timerInput.value, 10);
-    if (timerMinutes > 0) {
-        clearTimeout(timerId);
-        timerId = setTimeout(() => {
-            stopSound();
-        }, timerMinutes * 60 * 1000);
+    if (this.isIOS) {
+      this.showIOSWarning();
     }
-}
+  }
 
-// Стоп с fade-out
-function stopSound(immediate = false) {
-    if (!sourceNode) return;
+  initElements() {
+    this.playPauseBtn = document.querySelector(".player__buttonPlayPause");
+    this.dropdown = document.querySelector(".player__dropdown");
+    this.timerSelect = document.querySelector(".player__timer");
+    this.volumeBtn = document.querySelector(".player__volumeOnOff");
+    this.volumeSlider = document.querySelector(".player__volume");
+    this.iconEQ = document.querySelector(".player__icon-eq");
+    this.donationsCardBtn = document.querySelector(".donations__icon-copy");
+    this.cardNomber = document.querySelector(".donations__card");
+    this.iosWarning = document.getElementById("ios-warning");
+  }
 
-    clearTimeout(timerId);
+  bindEvents() {
+    // Основные контролы
+    this.playPauseBtn.addEventListener("click", () => this.togglePlay());
+    this.dropdown.addEventListener("change", () => this.changeSound());
+    this.timerSelect.addEventListener("change", () => this.setTimer());
+    this.volumeBtn.addEventListener("click", () => this.toggleMute());
+    this.donationsCardBtn.addEventListener("click", () => this.cardDonatCopy());
+    this.volumeSlider.addEventListener("input", (e) =>
+      this.setVolume(e.target.value)
+    );
 
-    if (immediate) {
-        sourceNode.stop();
-        sourceNode.disconnect();
-        sourceNode = null;
-        playBtn.style.backgroundImage = "url('/naomix_sound/images/play.svg')";
-        isPlaying = false;
-        return;
+    // Особые обработчики для iOS
+    if (this.isIOS) {
+      document.addEventListener("touchstart", () => this.unlockAudio(), {
+        once: true,
+      });
     }
 
-    // Плавный fade-out
-    gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
+    // Обработчики для аудио
+    this.audio.addEventListener("loadeddata", () => this.onAudioLoaded());
+    this.audio.addEventListener("error", (e) => this.onAudioError(e));
+    this.audio.addEventListener("ended", () => this.onAudioEnded());
+  }
 
-    setTimeout(() => {
-        if (sourceNode) {
-            sourceNode.stop();
-            sourceNode.disconnect();
-            sourceNode = null;
-        }
-        playBtn.style.backgroundImage = "url('/naomix_sound/images/play.svg')";
-        iconEQ.setAttribute('src', '/naomix_sound/images/icon-equalizer.svg');
-        isPlaying = false;
-    }, 2000);
-}
+  setupAudio() {
+    this.audio.loop = true;
+    this.audio.volume = 0; // Начинаем с нулевой громкости
+    this.audio.preload = "auto";
 
-// Переключение звука
-selector_BG_Music.addEventListener('change', async () => {
-    const selected = selector_BG_Music.value;
-    currentBuffer = await loadSound(sounds[selected]);
-    if (isPlaying) {
-        startSound();
-    }
-});
+    // Загружаем первый звук
+    this.changeSound();
+  }
 
-// Кнопка Play/Pause
-playBtn.addEventListener('click', () => {
-    if (!isPlaying) {
-        if (!currentBuffer) {
-            const selected = selector_BG_Music.value;
-            loadSound(sounds[selected]).then(buffer => {
-                currentBuffer = buffer;
-                startSound();
-            });
+  unlockAudio() {
+    // Для iOS: создаем и воспроизводим пустой звук
+    const silentBuffer = new AudioContext();
+    const source = silentBuffer.createBufferSource();
+    source.buffer = silentBuffer.createBuffer(1, 1, 22050);
+    source.connect(silentBuffer.destination);
+    source.start(0);
+
+    console.log("Аудио разблокировано для iOS");
+  }
+
+  // Функция плавного нарастания громкости
+  fadeIn() {
+    return new Promise((resolve) => {
+      // Останавливаем предыдущее затухание, если оно есть
+      if (this.fadeInterval) {
+        clearInterval(this.fadeInterval);
+      }
+
+      const targetVolume = this.volume;
+      const step = targetVolume / (this.fadeDuration / 50); // 50ms интервал
+      let currentVolume = 0;
+
+      this.audio.volume = currentVolume;
+
+      this.fadeInterval = setInterval(() => {
+        currentVolume += step;
+
+        if (currentVolume >= targetVolume) {
+          this.audio.volume = targetVolume;
+          clearInterval(this.fadeInterval);
+          this.fadeInterval = null;
+          resolve();
         } else {
-            startSound();
+          this.audio.volume = currentVolume;
         }
-    } else {
-        stopSound();
-    }
-});
-
-// Громкость
-volumeSlider.addEventListener('input', () => {
-    gainNode.gain.setValueAtTime(volumeSlider.value / 100, audioCtx.currentTime);
-});
-
-
-// Карта фоновых изображений для смены фона
-const backgroundsImagesMap = {
-  'rain_in_the_forest': '/naomix_sound/images/img_bg/rain_in_the_forest.webp',
-  'the_sound_of_rain': '/naomix_sound/images/img_bg/noise_of_rain.webp',
-  'glucophone': '/naomix_sound/images/img_bg/glucophone.webp',
-  'the_fire_in_the_oven': '/naomix_sound/images/img_bg/fire_in_the_oven.webp',
-  'fire_in_the_street': '/naomix_sound/images/img_bg/fire_on_the_street.webp',
-  'the_noise_of_the_forest': '/naomix_sound/images/img_bg/noise_forests.webp',
-  'wave_noise': '/naomix_sound/images/img_bg/noise_waves.webp',
-  'the_sound_of_the_sea': '/naomix_sound/images/img_bg/noise_of_the_sea.webp',
-  'the_sound_of_the_spring': '/naomix_sound/images/img_bg/sound_of_the_spring.webp',
-  'crickets': '/naomix_sound/images/img_bg/crickets_and_birds.webp',
-  'cicadas': '/naomix_sound/images/img_bg/tsykady.webp',
-  'in_the_cafe': '/naomix_sound/images/img_bg/in_cafe.webp',
-};
-
-// Смена фона при выборе в выпадающем списке
-selector_BG_Music.addEventListener('change', function () {
-  const imageUrl = backgroundsImagesMap[this.value] || backgroundsImagesMap['rain_in_the_forest'];
-  applyBackgroundImage(imageUrl);
-});
-
-// Функция для применения нового фона
-async function applyBackgroundImage(imageUrl) {
-  try {
-    // Ждем загрузки нового изображения
-    await preloadImage(imageUrl);
-
-    // Плавное исчезновение
-    backgroundImagePage.style.opacity = '0';
-
-    // Ждем завершения анимации opacity
-    await wait(200); // Совпадает с временем transition
-
-    // Меняем фон
-    backgroundImagePage.style.backgroundImage = `url('${imageUrl}')`;
-
-    // Плавное появление
-    backgroundImagePage.style.opacity = '1';
-
-  } catch (error) {
-    console.error('Ошибка загрузки фона:', error);
-    backgroundImagePage.style.opacity = '1'; // Возвращаем видимость
+      }, 50);
+    });
   }
-}
 
-// Вспомогательные функции
-function preloadImage(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(url);
-    img.onerror = () => reject(new Error(`Не удалось загрузить: ${url}`));
-    img.src = url;
-  });
-}
+  // Функция плавного затухания громкости
+  fadeOut() {
+    return new Promise((resolve) => {
+      // Останавливаем предыдущее нарастание, если оно есть
+      if (this.fadeInterval) {
+        clearInterval(this.fadeInterval);
+      }
 
-function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+      const startVolume = this.audio.volume;
+      const step = startVolume / (this.fadeDuration / 50); // 50ms интервал
+      let currentVolume = startVolume;
 
-// Копирования текста в буфер обмена (номер карты)
-donationsCardBtn.addEventListener("click", async function () {
-  const textCard = document.querySelector(".donations__card").textContent; // Получаем текст из элемента
+      this.fadeInterval = setInterval(() => {
+        currentVolume -= step;
 
-  try {
-    await navigator.clipboard.writeText(textCard.trim());
-    donationsCardBtn.setAttribute("src", "./images/copy-ok.svg");
+        if (currentVolume <= 0) {
+          this.audio.volume = 0;
+          clearInterval(this.fadeInterval);
+          this.fadeInterval = null;
+          resolve();
+        } else {
+          this.audio.volume = currentVolume;
+        }
+      }, 50);
+    });
+  }
+
+  async togglePlay() {
+    if (!this.currentSound) return;
+
+    try {
+      if (this.isPlaying) {
+        await this.pause();
+      } else {
+        await this.play();
+      }
+    } catch (error) {
+      console.error("Ошибка воспроизведения:", error);
+      if (this.isIOS) {
+        this.showIOSWarning("Нажмите еще раз для воспроизведения");
+      }
+    }
+  }
+
+  async play() {
+    // Для iOS важно, чтобы воспроизведение начиналось по жесту
+    await this.audio.play();
+    this.isPlaying = true;
+    this.playPauseBtn.classList.add("playing");
+    this.iconEQ.setAttribute("src", "images/icon-equalizer-animated.svg");
+    // Плавное нарастание звука
+    await this.fadeIn();
+  }
+
+  async pause() {
+    // Плавное затухание звука
+    await this.fadeOut();
+
+    this.audio.pause();
+    this.isPlaying = false;
+    this.playPauseBtn.classList.remove("playing");
+    this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
+  }
+
+  changeSound() {
+    const soundKey = this.dropdown.value;
+    this.currentSound = soundKey;
+
+    const soundUrls = {
+      rain_in_the_forest: "sounds/rain_in_the_forest.mp3",
+      the_sound_of_rain: "sounds/the_sound_of_rain.mp3",
+      glucophone: "sounds/Glucophone_(sleep_melody)_01.mp3",
+      the_fire_in_the_oven: "sounds/the_fire_in_the_oven.mp3",
+      fire_in_the_street: "sounds/fire_in_the_street.mp3",
+      the_noise_of_the_forest: "sounds/the_noise_of_the_forest.mp3",
+      wave_noise: "sounds/wave_noise.mp3",
+      the_sound_of_the_sea: "sounds/the_sound_of_the_sea.mp3",
+      the_sound_of_the_spring: "sounds/the_sound_of_the_spring.mp3",
+      crickets: "sounds/crickets.mp3",
+      cicadas: "sounds/cicadas.mp3",
+      in_the_cafe: "sounds/in_the_cafe.mp3",
+    };
+
+    this.audio.src = soundUrls[soundKey];
+
+    if (this.isPlaying) {
+      this.pause();
+    }
+  }
+
+  async setTimer() {
+    const minutes = parseInt(this.timerSelect.value);
+    this.clearTimer();
+
+    if (minutes > 0) {
+      this.timer = setTimeout(async () => {
+        if (this.isIOS) {
+          this.audio.pause();
+          this.isPlaying = false;
+          this.playPauseBtn.classList.remove("playing");
+          return;
+        } else {
+          await this.pause();
+          this.timerSelect.value = "0";
+        }
+      }, minutes * 60 * 1000);
+    }
+  }
+
+  clearTimer() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }
+
+  toggleMute() {
+    this.audio.muted = !this.audio.muted;
+    this.volumeBtn.classList.toggle("muted", this.audio.muted);
+
+    if (this.audio.muted) {
+      this.volumeSlider.parentElement.classList.add("player__label_disabled");
+    } else {
+      this.volumeSlider.parentElement.classList.remove(
+        "player__label_disabled"
+      );
+    }
+  }
+
+  setVolume(value) {
+    this.volume = value / 100;
+
+    if (this.isPlaying && !this.fadeInterval) {
+      this.audio.volume = this.volume;
+    }
+
+    localStorage.setItem("relaxPlayerVolume", value);
+  }
+
+  onAudioLoaded() {
+    console.log("Аудио загружено:", this.currentSound);
+  }
+
+  onAudioError(e) {
+    console.error("Ошибка загрузки аудио:", e);
+    alert("Ошибка загрузки звука. Попробуйте другой вариант.");
+  }
+
+  onAudioEnded() {
+    console.log("Аудио завершено");
+  }
+
+  showIOSWarning(message = null) {
+    this.iosWarning.style.display = "block";
+    if (message) {
+      this.iosWarning.textContent = message;
+    }
+
     setTimeout(() => {
-      donationsCardBtn.setAttribute("src", "./images/copy.svg");
-    }, 2000);
-  } catch (err) {
-    console.error("Ошибка копирования: ", err);
+      this.iosWarning.style.display = "none";
+    }, 5000);
   }
-});
 
-// Реализация влючения и выключение звука
-document.addEventListener("DOMContentLoaded", function () {
-  const volumeButton = document.querySelector(".player__volumeOnOff"); // Кнопка включения и выключения звука
-  const volumeInput = document.querySelector(".player__volume"); // Ползунок звука
-  const volumeLabel = document.querySelector(".player__label_disabled"); // Метка для отображения значения звука
-
-  // Отмена поведения по умолчанию для метки
-  volumeLabel.addEventListener("click", (event) => {
-    event.preventDefault();
-  });
-
-  let previousVolume = parseInt(volumeInput.value);
-  let isMuted = false;
-
-  volumeButton.addEventListener("click", function () {
-    if (isMuted) {
-      // Включаем звук, возвращаем предыдущее значение
-      volumeInput.value = previousVolume;
-      volumeButton.style.backgroundImage =
-        "url('./images/icon-vol-sound.svg')";
-    } else {
-      previousVolume = parseInt(volumeInput.value);
-      volumeInput.value = 0;
-      volumeButton.style.backgroundImage =
-        "url('./images/sound-off.svg')";
+  async cardDonatCopy() {
+    try {
+      await navigator.clipboard.writeText(this.cardNomber.textContent);
+      this.donationsCardBtn.setAttribute("src", "./images/copy-ok.svg");
+      setTimeout(() => {
+        this.donationsCardBtn.setAttribute("src", "./images/copy.svg");
+      }, 2000);
+    } catch (err) {
+      console.error("Ошибка копирования номера карты: ", err);
     }
+  }
 
-    isMuted = !isMuted;
-
-    // Триггер события для обновления состояния звука
-    volumeInput.dispatchEvent(new Event("input"));
-    volumeInput.dispatchEvent(new Event("change"));
-  });
-
-  // Обновляем иконку кнопки при изменении значения ползунка
-  volumeInput.addEventListener("input", function () {
-    const currentVolume = parseInt(this.value);
-
-    if (currentVolume === 0) {
-      volumeButton.style.backgroundImage =
-        "url('./images/sound-off.svg')";
-      isMuted = true;
-    } else {
-      volumeButton.style.backgroundImage =
-        "url('./images/icon-vol-sound.svg')";
-      isMuted = false;
-      previousVolume = currentVolume;
+  // Восстановление настроек из localStorage
+  loadSettings() {
+    const savedVolume = localStorage.getItem("relaxPlayerVolume");
+    if (savedVolume) {
+      this.volumeSlider.value = savedVolume;
+      this.setVolume(savedVolume);
     }
-  });
+  }
+}
+
+// Инициализация плеера при загрузке страницы
+document.addEventListener("DOMContentLoaded", () => {
+  const player = new RelaxPlayer();
+  player.loadSettings();
+
+  // Глобальный экспорт для отладки
+  window.relaxPlayer = player;
 });
-
-

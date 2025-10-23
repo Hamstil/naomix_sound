@@ -1,21 +1,51 @@
 .player__buttonPlayPause {
     width: 161px;
-    height: 161px;
-    background: url('../../../images/play.svg') no-repeat center;
-    background-size: cover;
-    border-radius: 50%;
-    border: none;
-    outline: none;
-    cursor: pointer;    
-    transition: transform .3s ease;
+  height: 161px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255);
+  background: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  display: block;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-.player__buttonPlayPause:hover {    
-    transform: scale(1.03);
+.player__buttonPlayPause:hover {
+  transform: scale(1.05);
+  background: rgba(0, 0, 0, 0.6);
 }
 
-.player__buttonPlayPause:focus {
-    transform: scale(1.03);
+.player__buttonPlayPause::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-44%, -50%);
+  width: 60px;
+  height: 60px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="-10 0 100 100"><path d="M15 20 L65 50 L15 80 Z" fill="white" stroke="white" stroke-linejoin="round" stroke-width="15"/></svg>');
+  background-repeat: no-repeat;
+}
+
+.player__buttonPlayPause.playing::before {
+  width: 10px;
+  height: 45px;
+  border: none;
+  background: white;
+  transform: translate(-133%, -50%);
+  border-radius: 3px;
+}
+
+.player__buttonPlayPause.playing::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(40%, -50%);
+  width: 10px;
+  height: 45px;
+  background: white;
+  border-radius: 3px;
 }
 
 @media screen and (max-width: 1700px) {
@@ -30,6 +60,22 @@
         width: 102px;
         height: 102px;
     }
+
+    .player__buttonPlayPause::before {
+        width: 40px;
+        height: 40px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 0 100 100"><path d="M15 20 L65 50 L15 80 Z" fill="white" stroke="white" stroke-linejoin="round" stroke-width="15"/></svg>');
+    }
+
+    .player__buttonPlayPause.playing::before {
+      width: 10px;
+      height: 30px;
+    }
+
+    .player__buttonPlayPause.playing::after {
+      width: 10px;
+      height: 30px;
+    }
 }
 
 @media screen and (max-width: 960px) {
@@ -43,5 +89,21 @@
     .player__buttonPlayPause {
         width: 79px;
         height: 79px;
+    }
+
+    .player__buttonPlayPause::before {
+        width: 30px;
+        height: 30px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="-10 0 100 100"><path d="M15 20 L65 50 L15 80 Z" fill="white" stroke="white" stroke-linejoin="round" stroke-width="15"/></svg>');
+    }
+
+    .player__buttonPlayPause.playing::before {
+      width: 8px;
+      height: 25px;
+    }
+
+    .player__buttonPlayPause.playing::after {
+      width: 8px;
+      height: 25px;
     }
 }
