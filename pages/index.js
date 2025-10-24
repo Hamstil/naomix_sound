@@ -29,12 +29,14 @@ class RelaxPlayer {
     this.donationsCardBtn = document.querySelector(".donations__icon-copy");
     this.cardNomber = document.querySelector(".donations__card");
     this.iosWarning = document.getElementById("ios-warning");
+    this.backgroundImagePage = document.querySelector(".page");
   }
 
   bindEvents() {
     // Основные контролы
     this.playPauseBtn.addEventListener("click", () => this.togglePlay());
     this.dropdown.addEventListener("change", () => this.changeSound());
+    this.dropdown.addEventListener("change", () => this.changeBGImage());
     this.timerSelect.addEventListener("change", () => this.setTimer());
     this.volumeBtn.addEventListener("click", () => this.toggleMute());
     this.donationsCardBtn.addEventListener("click", () => this.cardDonatCopy());
@@ -62,6 +64,8 @@ class RelaxPlayer {
 
     // Загружаем первый звук
     this.changeSound();
+    // Загружаем первую фоновую картинку
+    this.changeBGImage();
   }
 
   unlockAudio() {
@@ -194,6 +198,28 @@ class RelaxPlayer {
     }
   }
 
+  changeBGImage() {
+    const backgroundImageKey = this.dropdown.value;
+    this.currentBackgroundImage = backgroundImageKey;
+
+    const backgroundsImagesMap = {
+      rain_in_the_forest: "images/img_bg/rain_in_the_forest.webp",
+      the_sound_of_rain: "images/img_bg/noise_of_rain.webp",
+      glucophone: "images/img_bg/glucophone.webp",
+      the_fire_in_the_oven: "images/img_bg/Fire_in_the_oven.webp",
+      fire_in_the_street: "images/img_bg/fire_on_the_street.webp",
+      the_noise_of_the_forest: "images/img_bg/noise_forests.webp",
+      wave_noise: "images/img_bg/noise_waves.webp",
+      the_sound_of_the_sea: "images/img_bg/noise_of_the_sea.webp",
+      the_sound_of_the_spring: "images/img_bg/sound_of_the_spring.webp",
+      crickets: "images/img_bg/crickets_and_birds.webp",
+      cicadas: "images/img_bg/tsykady.webp",
+      in_the_cafe: "images/img_bg/in_cafe.webp",
+    };
+
+    this.backgroundImagePage.style.backgroundImage = `url(${backgroundsImagesMap[backgroundImageKey]})`;
+  }
+
   async setTimer() {
     const minutes = parseInt(this.timerSelect.value);
     this.clearTimer();
@@ -222,11 +248,12 @@ class RelaxPlayer {
 
   toggleMute() {
     this.audio.muted = !this.audio.muted;
-    this.volumeBtn.classList.toggle("muted", this.audio.muted);
 
     if (this.audio.muted) {
+      this.volumeBtn.style.backgroundImage = "url('./images/sound-off.svg')";
       this.volumeSlider.parentElement.classList.add("player__label_disabled");
     } else {
+      this.volumeBtn.style.backgroundImage = "url('./images/icon-vol-sound.svg')";
       this.volumeSlider.parentElement.classList.remove(
         "player__label_disabled"
       );
@@ -235,6 +262,18 @@ class RelaxPlayer {
 
   setVolume(value) {
     this.volume = value / 100;
+
+    // Если громкость больше 0, автоматически выключаем mute
+    if (this.volume > 0 && this.audio.muted) {
+      this.audio.muted = false;
+      this.volumeSlider.parentElement.classList.remove("player__label_disabled");
+    }
+
+    if (this.volume === 0) {
+      this.volumeBtn.style.backgroundImage = "url('./images/sound-off.svg')";
+    } else {
+      this.volumeBtn.style.backgroundImage = "url('./images/icon-vol-sound.svg')";
+    }
 
     if (this.isPlaying && !this.fadeInterval) {
       this.audio.volume = this.volume;
