@@ -1,11 +1,12 @@
 .player__dropdown {
   width: 100%;
   border: none;
-  padding: 10px 10px 10px 145px;  
+  padding: 10px 10px 10px 145px;
   font-size: 22px;
   font-weight: 700;
   line-height: 27px;
   letter-spacing: 0px;
+  color: #000;
   text-align: left;
   cursor: pointer;
   appearance: none; /* убираем стандартную стрелку */
@@ -44,7 +45,7 @@
 @media screen and (max-width: 960px) {
   .player__dropdown {
     padding: 11px 11px 14px 87px;
-    font-size: 15px;  
+    font-size: 15px;
     line-height: 18px;
     background-size: 14px;
     background-position: right 26px center;
@@ -54,7 +55,7 @@
 @media screen and (max-width: 520px) {
   .player__dropdown {
     padding: 12px 12px 13px 39px;
-    font-size: 12px;  
+    font-size: 12px;
     line-height: 15px;
     background-size: 14px;
     background-position: right 26px center;
