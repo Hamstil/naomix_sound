@@ -230,6 +230,7 @@ class RelaxPlayer {
           this.audio.pause();
           this.isPlaying = false;
           this.playPauseBtn.classList.remove("playing");
+          this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
           return;
         } else {
           await this.pause();
