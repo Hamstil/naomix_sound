@@ -15,6 +15,7 @@ class RelaxPlayer {
     this.setupAudio();
 
     if (this.isIOS) {
+      this.volumeSlider.style.display = "none";
       this.showIOSWarning();
     }
   }
