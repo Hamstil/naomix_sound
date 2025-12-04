@@ -2,67 +2,55 @@
   min-width: 200px;
   height: 50px;
   margin-right: 34px;
+  padding: 11px 43px 12px;
   border: none;
-  border-radius: 50px 50px 50px 50px;
-  padding: 11px 43px 12px 43px;
+  border-radius: 50px;
   font-size: 22px;
   font-weight: 700;
   line-height: 27px;
   color: #000;
   text-align: center;
   cursor: pointer;
-  appearance: none; /* убираем стандартную стрелку */
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   transform: scale(1);
   transition: transform 0.3s ease;
-}
 
-.player__timer:focus {
-  outline: none;
-  transform: scale(1.03);
-}
+  &:focus {
+    outline: none;
+    transform: scale(1.03);
+  }
 
-@media screen and (max-width: 1700px) {
-  .player__timer {
+  @media (max-width: 1700px) {
     min-width: 144px;
     height: 36px;
+    margin-right: 25px;
     padding: 8px 30px 9px 34px;
     font-size: 16px;
     line-height: 20px;
-    margin-right: 25px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .player__timer {
+  @media (max-width: 1200px) {
     min-width: 121px;
     height: 30px;
+    margin-right: 19px;
     padding: 7px 20px 5px 23px;
     font-size: 14px;
     line-height: 17px;
-    margin-right: 19px;
   }
-}
 
-@media screen and (max-width: 960px) {
-  .player__timer {
-    min-width: 121px;
-    height: 30px;
+  @media (max-width: 960px) {
+    margin-right: 18px;
     padding: 7px 29px 7px 26px;
     font-size: 13px;
     line-height: 16px;
-    margin-right: 18px;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .player__timer {
+  @media (max-width: 520px) {
     min-width: 117px;
     height: 27px;
-    padding: 5px 27px 6px 24px;
-    font-size: 13px;
-    line-height: 16px;
     margin-right: 16px;
+    padding: 5px 27px 6px 24px;
   }
 }

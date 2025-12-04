@@ -25,7 +25,7 @@
     <header class="header">
       <img
         src="./images/logo.svg"
-        alt="Логотим наомикс"
+        alt="Логотип наомикс"
         class="header__logo"
         loading="lazy"
       />
@@ -74,13 +74,14 @@
             </select>
           </label>
           <label class="player__label player__label_disabled">
-            <button class="player__volumeOnOff"></button>
+            <button class="player__volumeOnOff" aria-label="Включить/выключить звук"></button>
             <input
               type="range"
               min="0"
               max="100"
               value="50"
               class="player__volume"
+              aria-label="Громкость"
             />
           </label>
         </div>
@@ -167,6 +168,7 @@
             <a
               href="https://vk.com/naomix_sound"
               target="_blank"
+              rel="noopener noreferrer"
               class="contacts__social-link"
               ><img
                 src="./images/social/icon-vk.svg"
@@ -179,6 +181,7 @@
             <a
               href="https://rutube.ru/channel/66904645/"
               target="_blank"
+              rel="noopener noreferrer"
               class="contacts__social-link"
               ><img
                 src="./images/social/icon-rutube.svg"
@@ -191,6 +194,7 @@
             <a
               href="https://t.me/naomix_sound"
               target="_blank"
+              rel="noopener noreferrer"
               class="contacts__social-link"
               ><img
                 src="./images/social/icon-telegram.svg"

@@ -1,41 +1,26 @@
 .content404__description {
-  margin: 0 0 48px 0;
+  margin: 0 0 48px;
   padding: 0;
   font-size: 28px;
   font-weight: 400;
   line-height: 34px;
-  letter-spacing: 0px;
-  text-align: center;
   color: #fff;
-}
+  text-align: center;
 
-@media screen and (max-width: 1700px) {
-  .content404__description {
-    margin: 0 0 35px 0;
+  @media (max-width: 1700px) {
+    margin-bottom: 35px;
     font-size: 23px;
     line-height: 28px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .content404__description {
-    margin: 0 0 35px 0;
-    font-size: 23px;
-    line-height: 28px;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .content404__description {
-    margin: 0 0 36px 0;
+  @media (max-width: 960px) {
+    margin-bottom: 36px;
     font-size: 16px;
     line-height: 20px;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .content404__description {
-    margin: 0 0 23px 0;
+  @media (max-width: 520px) {
+    margin-bottom: 23px;
     font-size: 13px;
     line-height: 16px;
   }

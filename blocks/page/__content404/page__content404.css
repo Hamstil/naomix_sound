@@ -1,28 +1,20 @@
 .page__content404 {
-    padding: 0 145px 50px 145px;    
-    background: linear-gradient(to bottom , rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));    
-}
+    padding: 0 145px 50px;
+    background-color: rgba(0, 0, 0, 0.4);
 
-@media screen and (max-width: 1700px) {
-    .page__content404 {
-        padding: 0 77px;
+    @media (max-width: 1700px) {
+        padding-inline: 77px;
     }
-}
 
-@media screen and (max-width: 1200px) {
-    .page__content404 {
-        padding: 0 64px;
+    @media (max-width: 1200px) {
+        padding-inline: 64px;
     }
-}
 
-@media screen and (max-width: 960px) {
-    .page__content404 {
-        padding: 0 48px;
+    @media (max-width: 960px) {
+        padding-inline: 48px;
     }
-}
 
-@media screen and (max-width: 520px) {
-    .page__content404 {
-        padding: 0 28px;
+    @media (max-width: 520px) {
+        padding-inline: 28px;
     }
 }

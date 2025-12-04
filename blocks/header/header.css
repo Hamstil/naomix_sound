@@ -1,32 +1,24 @@
 .header {
-  background: linear-gradient(to bottom , rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 44px 0 108px 0;  
-}
+  padding: 44px 0 108px;
 
-@media screen and (max-width: 1280px) {
-  .header {
-    padding: 37px 0 67px 0;
+  @media (max-width: 1280px) {
+    padding-block: 37px 67px;
   }
-}
 
-@media screen and (max-width: 1024px) {
-  .header {
-    padding: 29px 0 45px 0;
+  @media (max-width: 1024px) {
+    padding-block: 29px 45px;
   }
-}
 
-@media screen and (max-width: 768px) {
-  .header {
-    padding: 28px 0 30px 0;
+  @media (max-width: 768px) {
+    padding-block: 28px 30px;
   }
-}
 
-@media screen and (max-width: 320px) {
-  .header {
-    padding: 19px 0 35px 0;
+  @media (max-width: 320px) {
+    padding-block: 19px 35px;
   }
 }

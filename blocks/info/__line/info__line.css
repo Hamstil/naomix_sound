@@ -1,25 +1,17 @@
 .info__line {
   max-width: 141px;
-  border: 1px solid #fff;
   margin-bottom: 27px;
-}
+  border: 1px solid #fff;
 
-@media screen and (max-width: 1780px) {
-  .info__line {
-    max-width: 141px;
+  @media (max-width: 1780px) {
     margin-bottom: 14px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .info__line {
-    max-width: 141px;
+  @media (max-width: 1200px) {
     margin-bottom: 9px;
   }
-}
 
-@media screen and (max-width: 1060px) {
-  .info__line {
+  @media (max-width: 1060px) {
     display: none;
   }
 }

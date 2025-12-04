@@ -1,32 +1,23 @@
 .contacts__icon-email {
     max-width: 23px;
     margin-right: 9px;
-}
 
-@media screen and (max-width: 1700px) {
-    .contacts__icon-email {
+    @media screen and (max-width: 1700px) {
         max-width: 18px;
         margin-right: 14px;
     }
-}
 
-@media screen and (max-width: 1200px) {
-    .contacts__icon-email {
+    @media screen and (max-width: 1200px) {
         max-width: 16px;
         margin-right: 7px;
     }
-}
 
-@media screen and (max-width: 960px) {
-    .contacts__icon-email {
+    @media screen and (max-width: 960px) {
         max-width: 19px;
         margin-right: 10px;
     }
-}
 
-@media screen and (max-width: 520px) {
-    .contacts__icon-email {
-        max-width: 19px;
+    @media screen and (max-width: 520px) {
         margin-right: 8px;
     }
 }

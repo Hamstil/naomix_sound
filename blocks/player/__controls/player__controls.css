@@ -1,11 +1,8 @@
 .player__controls {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
+  display: flex;
+  flex-wrap: wrap;
 
-@media screen and (max-width: 520px) {
-    .player__controls {
-        row-gap: 29px;
-    }
+  @media (max-width: 520px) {
+    row-gap: 29px;
+  }
 }

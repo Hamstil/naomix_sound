@@ -12,35 +12,27 @@
   background-size: 0% 1px; /* изначально невидимая линия */
   background-position: bottom left; /* сверху */
   transition: background-size 0.3s ease;
-}
 
-.contacts__link:hover {
-  background-size: 100% 1px; /* растягиваем линию */
-}
+  &:hover {
+    background-size: 100% 1px; /* растягиваем линию */
+  }
 
-@media screen and (max-width: 1700px) {
-  .contacts__link {
+  @media screen and (max-width: 1700px) {
     font-size: 13px;
     line-height: 16px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .contacts__link {
+  @media screen and (max-width: 1200px) {
     font-size: 12px;
     line-height: 15px;
   }
-}
 
-@media screen and (max-width: 960px) {
-  .contacts__link {
+  @media screen and (max-width: 960px) {
     font-size: 15px;
     line-height: 18px;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .contacts__link {
+  @media screen and (max-width: 520px) {
     font-size: 14px;
     line-height: 17px;
   }

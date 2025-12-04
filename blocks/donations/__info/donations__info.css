@@ -1,5 +1,4 @@
 .donations__info {
-    display: flex;
-    flex-direction: row;
-    align-items: center;    
+  display: flex;
+  align-items: center;
 }

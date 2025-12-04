@@ -1,27 +1,19 @@
 .page__footer {
-  padding: 0 145px;  
-}
+  padding: 0 145px;
 
-@media screen and (max-width: 1700px) {
-  .page__footer {
+  @media (max-width: 1700px) {
     padding: 0 77px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .page__footer {
+  @media (max-width: 1200px) {
     padding: 0 64px;
   }
-}
 
-@media screen and (max-width: 960px) {
-  .page__footer {
+  @media (max-width: 960px) {
     padding: 0 48px;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .page__footer {
+  @media (max-width: 520px) {
     padding: 0 28px;
   }
 }

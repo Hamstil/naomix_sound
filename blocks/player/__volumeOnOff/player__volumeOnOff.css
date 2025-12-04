@@ -2,44 +2,34 @@
   width: 37px;
   height: 32.07px;
   margin-right: 17px;
+  border: none;
   background: url('../../../images/icon-vol-sound.svg') no-repeat center;
   background-size: cover;
-  border: none;
   outline: none;
   cursor: pointer;
-  transition: transform .3s ease;
-}
+  transition: transform 0.3s ease;
 
-.player__volumeOnOff:focus {
-  transform: scale(1.05);
-}
+  &:focus {
+    transform: scale(1.05);
+  }
 
-@media screen and (max-width: 1700px) {
-  .player__volumeOnOff {
+  @media (max-width: 1700px) {
     width: 28px;
     height: 24px;
     margin-right: 11px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .player__volumeOnOff {
+  @media (max-width: 1200px) {
     width: 22px;
     height: 19px;
     margin-right: 17px;
   }
-}
 
-@media screen and (max-width: 960px) {
-  .player__volumeOnOff {
-    width: 22px;
-    height: 19px;
+  @media (max-width: 960px) {
     margin-right: 11px;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .player__volumeOnOff {
+  @media (max-width: 520px) {
     width: 20px;
     height: 18px;
     margin-right: 10px;

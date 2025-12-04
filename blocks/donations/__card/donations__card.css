@@ -1,43 +1,33 @@
 .donations__card {
   margin: 0 27px 0 0;
   padding: 0;
-  color: #fff;
   font-size: 20px;
   font-weight: 500;
   line-height: 27px;
-  letter-spacing: 0px;
-  text-align: left;
+  color: #fff;
   -webkit-text-fill-color: #fff !important;
-}
 
-@media screen and (max-width: 1700px) {
-  .donations__card {
+  @media (max-width: 1700px) {
+    margin-right: 18px;
     font-size: 14px;
     line-height: 18px;
-    margin: 0 18px 0 0;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .donations__card {
+  @media (max-width: 1200px) {
+    margin-right: 12px;
     font-size: 12px;
     line-height: 17px;
-    margin: 0 12px 0 0;
   }
-}
 
-@media screen and (max-width: 960px) {
-  .donations__card {
+  @media (max-width: 960px) {
+    margin-right: 13px;
     font-size: 15px;
     line-height: 20px;
-    margin: 0 13px 0 0;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .donations__card {
+  @media (max-width: 520px) {
+    margin-right: 12px;
     font-size: 12px;
     line-height: 17px;
-    margin: 0 12px 0 0;
   }
 }

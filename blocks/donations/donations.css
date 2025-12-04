@@ -1,37 +1,29 @@
 .donations {
-  max-width: 394px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 15px 0;
-}
+  max-width: 394px;
+  row-gap: 15px;
 
-@media screen and (max-width: 1700px) {
-  .donations {
+  @media (max-width: 1700px) {
     max-width: 277px;
-    gap: 10px 0;
+    row-gap: 10px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .donations {
+  @media (max-width: 1200px) {
     max-width: 246px;
-    gap: 7px 0;
+    row-gap: 7px;
   }
-}
 
-@media screen and (max-width: 960px) {
-  .donations {
+  @media (max-width: 960px) {
     max-width: 277px;
-    gap: 9px 0;
     margin-bottom: 26px;
+    row-gap: 9px;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .donations {
+  @media (max-width: 520px) {
     max-width: 264px;
-    gap: 10px 0;
     margin-bottom: 23px;
+    row-gap: 10px;
   }
 }

@@ -1,17 +1,19 @@
-// Элементы
-const donationsCardBtn = document.querySelector(".donations__icon-copy"); // Кнопка копирования номера карты
+document.addEventListener("DOMContentLoaded", () => {
+  const donationsCardBtn = document.querySelector(".donations__icon-copy");
+  const cardElement = document.querySelector(".donations__card");
 
-// Копирования текста в буфер обмена (номер карты)
-donationsCardBtn.addEventListener("click", async function () {
-  const textCard = document.querySelector(".donations__card").textContent; // Получаем текст из элемента
+  if (donationsCardBtn && cardElement) {
+    donationsCardBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(cardElement.textContent.trim());
+        donationsCardBtn.setAttribute("src", "./images/copy-ok.svg");
 
-  try {
-    await navigator.clipboard.writeText(textCard.trim());
-    donationsCardBtn.setAttribute("src", "./images/copy-ok.svg");
-    setTimeout(() => {
-      donationsCardBtn.setAttribute("src", "./images/copy.svg");
-    }, 2000);
-  } catch (err) {
-    console.error("Ошибка копирования: ", err);
+        setTimeout(() => {
+          donationsCardBtn.setAttribute("src", "./images/copy.svg");
+        }, 2000);
+      } catch (err) {
+        console.error("Ошибка копирования: ", err);
+      }
+    });
   }
 });

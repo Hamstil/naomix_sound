@@ -1,109 +1,96 @@
 .player__buttonPlayPause {
-    width: 161px;
-  height: 161px;
-  border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255);
-  background: rgba(0, 0, 0, 0.6);
-  cursor: pointer;
   display: block;
   position: relative;
+  width: 161px;
+  height: 161px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
   transition: all 0.3s ease;
-}
 
-.player__buttonPlayPause:hover {
-  transform: scale(1.05);
-  background: rgba(0, 0, 0, 0.6);
-}
+  &:hover {
+    transform: scale(1.05);
+  }
 
-.player__buttonPlayPause::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-44%, -50%);
-  width: 60px;
-  height: 60px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="-10 0 100 100"><path d="M15 20 L65 50 L15 80 Z" fill="white" stroke="white" stroke-linejoin="round" stroke-width="15"/></svg>');
-  background-repeat: no-repeat;
-}
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    transform: translate(-44%, -50%);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 100 100"><path d="M15 20 L65 50 L15 80 Z" fill="white" stroke="white" stroke-linejoin="round" stroke-width="15"/></svg>');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 
-.player__buttonPlayPause.playing::before {
-  width: 10px;
-  height: 45px;
-  border: none;
-  background: white;
-  transform: translate(-133%, -50%);
-  border-radius: 3px;
-}
-
-.player__buttonPlayPause.playing::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(40%, -50%);
-  width: 10px;
-  height: 45px;
-  background: white;
-  border-radius: 3px;
-}
-
-@media screen and (max-width: 1700px) {
-    .player__buttonPlayPause {
-        width: 122px;
-        height: 122px;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .player__buttonPlayPause {
-        width: 102px;
-        height: 102px;
-    }
-
-    .player__buttonPlayPause::before {
-        width: 40px;
-        height: 40px;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 0 100 100"><path d="M15 20 L65 50 L15 80 Z" fill="white" stroke="white" stroke-linejoin="round" stroke-width="15"/></svg>');
-    }
-
-    .player__buttonPlayPause.playing::before {
+  &.playing {
+    &::before {
       width: 10px;
-      height: 30px;
+      height: 45px;
+      border: none;
+      border-radius: 3px;
+      background: white;
+      transform: translate(-133%, -50%);
     }
 
-    .player__buttonPlayPause.playing::after {
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
       width: 10px;
-      height: 30px;
+      height: 45px;
+      border-radius: 3px;
+      background: white;
+      transform: translate(40%, -50%);
     }
-}
+  }
 
-@media screen and (max-width: 960px) {
-    .player__buttonPlayPause {
-        width: 101px;
-        height: 101px;
+  @media (max-width: 1700px) {
+    width: 122px;
+    height: 122px;
+  }
+
+  @media (max-width: 1200px) {
+    width: 102px;
+    height: 102px;
+
+    &::before {
+      width: 40px;
+      height: 40px;
     }
-}
 
-@media screen and (max-width: 520px) {
-    .player__buttonPlayPause {
-        width: 79px;
-        height: 79px;
-    }
-
-    .player__buttonPlayPause::before {
-        width: 30px;
+    &.playing {
+      &::before,
+      &::after {
         height: 30px;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="-10 0 100 100"><path d="M15 20 L65 50 L15 80 Z" fill="white" stroke="white" stroke-linejoin="round" stroke-width="15"/></svg>');
+      }
+    }
+  }
+
+  @media (max-width: 960px) {
+    width: 101px;
+    height: 101px;
+  }
+
+  @media (max-width: 520px) {
+    width: 79px;
+    height: 79px;
+
+    &::before {
+      width: 30px;
+      height: 30px;
     }
 
-    .player__buttonPlayPause.playing::before {
-      width: 8px;
-      height: 25px;
+    &.playing {
+      &::before,
+      &::after {
+        width: 8px;
+        height: 25px;
+      }
     }
-
-    .player__buttonPlayPause.playing::after {
-      width: 8px;
-      height: 25px;
-    }
+  }
 }

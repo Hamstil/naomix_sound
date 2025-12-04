@@ -1,67 +1,60 @@
 .player__volume {
-  -webkit-appearance: none; /* Скрываем дефолтный вид */
-  appearance: none;
-  cursor: pointer;
   width: 162px;
   height: 3px;
-  transition: transform 0.3s ease;
-}
-
-.player__volume::-webkit-slider-thumb {
+  appearance: none;
   -webkit-appearance: none;
-  appearance: none;  
-  box-shadow: 2px 2px 2px rgba(0,0,0,0.6);
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  background-color: #fff;  
-}
+  cursor: pointer;
+  transition: transform 0.3s ease;
 
-.player__volume:focus {
-  outline: none;
-  transform: scale(1.05);
-}
+  &::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+    appearance: none;
+    -webkit-appearance: none;
+  }
 
-@media screen and (max-width: 1700px) {
-  .player__volume {
+  &:focus {
+    outline: none;
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 1700px) {
     width: 119px;
-    height: 3px;
-  }
-  .player__volume::-webkit-slider-thumb {
-    width: 12px;
-    height: 12px;
-  }
-}
 
-@media screen and (max-width: 1200px) {
-  .player__volume {
+    &::-webkit-slider-thumb {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  @media (max-width: 1200px) {
     width: 92px;
-    height: 3px;
-  }
-  .player__volume::-webkit-slider-thumb {
-    width: 9px;
-    height: 9px;
-  }
-}
 
-@media screen and (max-width: 960px) {
-  .player__volume {
+    &::-webkit-slider-thumb {
+      width: 9px;
+      height: 9px;
+    }
+  }
+
+  @media (max-width: 960px) {
     width: 98px;
-    height: 3px;
-  }
-  .player__volume::-webkit-slider-thumb {
-    width: 10px;
-    height: 10px;
-  }
-}
 
-@media screen and (max-width: 520px) {
-  .player__volume {
+    &::-webkit-slider-thumb {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  @media (max-width: 520px) {
     width: 87px;
     height: 2px;
-  }
-  .player__volume::-webkit-slider-thumb {
-    width: 9px;
-    height: 9px;
+
+    &::-webkit-slider-thumb {
+      width: 9px;
+      height: 9px;
+    }
   }
 }

@@ -4,28 +4,20 @@
   justify-content: center;
   align-items: center;
   row-gap: 55px;
-}
 
-@media screen and (max-width: 1700px) {
-  .player {
+  @media (max-width: 1700px) {
     row-gap: 43px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .player {
+  @media (max-width: 1200px) {
     row-gap: 38px;
   }
-}
 
-@media screen and (max-width: 960px) {
-  .player {
+  @media (max-width: 960px) {
     row-gap: 27px;
   }
-}
 
-@media screen and (max-width: 520px) {
-  .player {
+  @media (max-width: 520px) {
     row-gap: 30px;
   }
 }

@@ -1,32 +1,19 @@
 .player__icon-eq {
-    max-width: 28px;
-    margin: 0 47px 0 49px;
-}
+  max-width: 28px;
+  margin: 0 47px 0 49px;
 
-@media screen and (max-width: 1700px) {
-    .player__icon-eq {
-        max-width: 24px;
-        margin: 0 32px 0 33px;
-    }
-}
+  @media (max-width: 1700px) {
+    max-width: 24px;
+    margin: 0 32px 0 33px;
+  }
 
-@media screen and (max-width: 1200px) {
-    .player__icon-eq {
-        max-width: 18px;
-        margin: 0 28px 0 29px;
-    }
-}
+  @media (max-width: 1200px) {
+    max-width: 18px;
+    margin: 0 28px 0 29px;
+  }
 
-@media screen and (max-width: 960px) {
-    .player__icon-eq {
-        max-width: 18px;
-        margin: 0 28px 0 29px;
-    }
-}
-
-@media screen and (max-width: 520px) {
-    .player__icon-eq {
-        max-width: 16px;
-        margin: 0 20px 0 21px;
-    }
+  @media (max-width: 520px) {
+    max-width: 16px;
+    margin: 0 20px 0 21px;
+  }
 }

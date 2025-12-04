@@ -1,21 +1,15 @@
 .info__title_width_three {
   max-width: 396px;
-}
 
-@media screen and (max-width: 1780px) {
-  .info__title_width_three {
+  @media (max-width: 1780px) {
     max-width: 263px;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .info__title_width_three {
+  @media (max-width: 1200px) {
     max-width: 211px;
   }
-}
 
-@media screen and (max-width: 1060px) {
-  .info__title_width_three {
+  @media (max-width: 1060px) {
     max-width: 456px;
   }
 }

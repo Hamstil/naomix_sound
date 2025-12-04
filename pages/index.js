@@ -2,20 +2,50 @@ class RelaxPlayer {
   constructor() {
     this.audio = new Audio();
     this.isPlaying = false;
-    this.isIOS =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     this.currentSound = null;
     this.timer = null;
     this.volume = 0.5;
-    this.fadeInterval = null;
+    this.fadeAnimation = null;
     this.fadeDuration = 1000; // Длительность затухания/нарастания в мс
+    this.saveVolumeTimeout = null;
+
+    this.soundUrls = {
+      rain_in_the_forest: "sounds/rain_in_the_forest.mp3",
+      the_sound_of_rain: "sounds/the_sound_of_rain.mp3",
+      glucophone: "sounds/Glucophone_(sleep_melody)_01.mp3",
+      the_fire_in_the_oven: "sounds/the_fire_in_the_oven.mp3",
+      fire_in_the_street: "sounds/fire_in_the_street.mp3",
+      the_noise_of_the_forest: "sounds/the_noise_of_the_forest.mp3",
+      wave_noise: "sounds/wave_noise.mp3",
+      the_sound_of_the_sea: "sounds/the_sound_of_the_sea.mp3",
+      the_sound_of_the_spring: "sounds/the_sound_of_the_spring.mp3",
+      crickets: "sounds/crickets.mp3",
+      cicadas: "sounds/cicadas.mp3",
+      in_the_cafe: "sounds/in_the_cafe.mp3",
+    };
+
+    this.backgroundsImagesMap = {
+      rain_in_the_forest: "images/img_bg/rain_in_the_forest.webp",
+      the_sound_of_rain: "images/img_bg/noise_of_rain.webp",
+      glucophone: "images/img_bg/glucophone.webp",
+      the_fire_in_the_oven: "images/img_bg/Fire_in_the_oven.webp",
+      fire_in_the_street: "images/img_bg/fire_on_the_street.webp",
+      the_noise_of_the_forest: "images/img_bg/noise_forests.webp",
+      wave_noise: "images/img_bg/noise_waves.webp",
+      the_sound_of_the_sea: "images/img_bg/noise_of_the_sea.webp",
+      the_sound_of_the_spring: "images/img_bg/sound_of_the_spring.webp",
+      crickets: "images/img_bg/crickets_and_birds.webp",
+      cicadas: "images/img_bg/tsykady.webp",
+      in_the_cafe: "images/img_bg/in_cafe.webp",
+    };
 
     this.initElements();
     this.bindEvents();
     this.setupAudio();
 
     if (this.isIOS) {
-      this.volumeSlider.style.display = "none";
+      if (this.volumeSlider) this.volumeSlider.style.display = "none";
       this.showIOSWarning();
     }
   }
@@ -36,8 +66,7 @@ class RelaxPlayer {
   bindEvents() {
     // Основные контролы
     this.playPauseBtn.addEventListener("click", () => this.togglePlay());
-    this.dropdown.addEventListener("change", () => this.changeSound());
-    this.dropdown.addEventListener("change", () => this.changeBGImage());
+    this.dropdown.addEventListener("change", () => this.handleContentChange());
     this.timerSelect.addEventListener("change", () => this.setTimer());
     this.volumeBtn.addEventListener("click", () => this.toggleMute());
     this.donationsCardBtn.addEventListener("click", () => this.cardDonatCopy());
@@ -63,10 +92,8 @@ class RelaxPlayer {
     this.audio.volume = 0; // Начинаем с нулевой громкости
     this.audio.preload = "auto";
 
-    // Загружаем первый звук
-    this.changeSound();
-    // Загружаем первую фоновую картинку
-    this.changeBGImage();
+    // Загружаем первый звук и фон
+    this.handleContentChange();
   }
 
   unlockAudio() {
@@ -80,59 +107,36 @@ class RelaxPlayer {
     console.log("Аудио разблокировано для iOS");
   }
 
-  // Функция плавного нарастания громкости
-  fadeIn() {
-    return new Promise((resolve) => {
-      // Останавливаем предыдущее затухание, если оно есть
-      if (this.fadeInterval) {
-        clearInterval(this.fadeInterval);
-      }
+  // Функция плавного изменения громкости
+  fadeVolume(targetVolume) {
+    if (this.fadeAnimation) {
+      cancelAnimationFrame(this.fadeAnimation);
+    }
 
-      const targetVolume = this.volume;
-      const step = targetVolume / (this.fadeDuration / 50); // 50ms интервал
-      let currentVolume = 0;
+    const startVolume = this.audio.volume;
+    const startTime = performance.now();
 
-      this.audio.volume = currentVolume;
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / this.fadeDuration, 1);
 
-      this.fadeInterval = setInterval(() => {
-        currentVolume += step;
+      this.audio.volume = startVolume + (targetVolume - startVolume) * progress;
 
-        if (currentVolume >= targetVolume) {
-          this.audio.volume = targetVolume;
-          clearInterval(this.fadeInterval);
-          this.fadeInterval = null;
-          resolve();
-        } else {
-          this.audio.volume = currentVolume;
+      if (progress < 1) {
+        this.fadeAnimation = requestAnimationFrame(animate);
+      } else {
+        this.fadeAnimation = null;
+        if (targetVolume === 0) {
+          // Если цель была 0 (fadeOut), можно выполнить дополнительные действия, если нужно
         }
-      }, 50);
-    });
-  }
-
-  // Функция плавного затухания громкости
-  fadeOut() {
-    return new Promise((resolve) => {
-      // Останавливаем предыдущее нарастание, если оно есть
-      if (this.fadeInterval) {
-        clearInterval(this.fadeInterval);
       }
+    };
 
-      const startVolume = this.audio.volume;
-      const step = startVolume / (this.fadeDuration / 50); // 50ms интервал
-      let currentVolume = startVolume;
-
-      this.fadeInterval = setInterval(() => {
-        currentVolume -= step;
-
-        if (currentVolume <= 0) {
-          this.audio.volume = 0;
-          clearInterval(this.fadeInterval);
-          this.fadeInterval = null;
-          resolve();
-        } else {
-          this.audio.volume = currentVolume;
-        }
-      }, 50);
+    this.fadeAnimation = requestAnimationFrame(animate);
+    return new Promise(resolve => {
+      // Промис для совместимости с await в play/pause, хотя с RAF это сложнее синхронизировать точно
+      // Для простоты оставим тайм-аут для resolve
+      setTimeout(resolve, this.fadeDuration);
     });
   }
 
@@ -160,12 +164,12 @@ class RelaxPlayer {
     this.playPauseBtn.classList.add("playing");
     this.iconEQ.setAttribute("src", "images/icon-equalizer-animated.svg");
     // Плавное нарастание звука
-    await this.fadeIn();
+    await this.fadeVolume(this.volume);
   }
 
   async pause() {
     // Плавное затухание звука
-    await this.fadeOut();
+    await this.fadeVolume(0);
 
     this.audio.pause();
     this.isPlaying = false;
@@ -173,52 +177,23 @@ class RelaxPlayer {
     this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
   }
 
-  changeSound() {
-    const soundKey = this.dropdown.value;
-    this.currentSound = soundKey;
+  handleContentChange() {
+    const key = this.dropdown.value;
+    this.currentSound = key;
 
-    const soundUrls = {
-      rain_in_the_forest: "sounds/rain_in_the_forest.mp3",
-      the_sound_of_rain: "sounds/the_sound_of_rain.mp3",
-      glucophone: "sounds/Glucophone_(sleep_melody)_01.mp3",
-      the_fire_in_the_oven: "sounds/the_fire_in_the_oven.mp3",
-      fire_in_the_street: "sounds/fire_in_the_street.mp3",
-      the_noise_of_the_forest: "sounds/the_noise_of_the_forest.mp3",
-      wave_noise: "sounds/wave_noise.mp3",
-      the_sound_of_the_sea: "sounds/the_sound_of_the_sea.mp3",
-      the_sound_of_the_spring: "sounds/the_sound_of_the_spring.mp3",
-      crickets: "sounds/crickets.mp3",
-      cicadas: "sounds/cicadas.mp3",
-      in_the_cafe: "sounds/in_the_cafe.mp3",
-    };
+    // Смена фона
+    if (this.backgroundsImagesMap[key]) {
+      this.backgroundImagePage.style.backgroundImage = `url(${this.backgroundsImagesMap[key]})`;
+    }
 
-    this.audio.src = soundUrls[soundKey];
+    // Смена аудио
+    if (this.soundUrls[key]) {
+      this.audio.src = this.soundUrls[key];
+    }
 
     if (this.isPlaying) {
       this.pause();
     }
-  }
-
-  changeBGImage() {
-    const backgroundImageKey = this.dropdown.value;
-    this.currentBackgroundImage = backgroundImageKey;
-
-    const backgroundsImagesMap = {
-      rain_in_the_forest: "images/img_bg/rain_in_the_forest.webp",
-      the_sound_of_rain: "images/img_bg/noise_of_rain.webp",
-      glucophone: "images/img_bg/glucophone.webp",
-      the_fire_in_the_oven: "images/img_bg/Fire_in_the_oven.webp",
-      fire_in_the_street: "images/img_bg/fire_on_the_street.webp",
-      the_noise_of_the_forest: "images/img_bg/noise_forests.webp",
-      wave_noise: "images/img_bg/noise_waves.webp",
-      the_sound_of_the_sea: "images/img_bg/noise_of_the_sea.webp",
-      the_sound_of_the_spring: "images/img_bg/sound_of_the_spring.webp",
-      crickets: "images/img_bg/crickets_and_birds.webp",
-      cicadas: "images/img_bg/tsykady.webp",
-      in_the_cafe: "images/img_bg/in_cafe.webp",
-    };
-
-    this.backgroundImagePage.style.backgroundImage = `url(${backgroundsImagesMap[backgroundImageKey]})`;
   }
 
   async setTimer() {
@@ -232,7 +207,6 @@ class RelaxPlayer {
           this.isPlaying = false;
           this.playPauseBtn.classList.remove("playing");
           this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
-          return;
         } else {
           await this.pause();
           this.timerSelect.value = "0";
@@ -256,14 +230,13 @@ class RelaxPlayer {
       this.volumeSlider.parentElement.classList.add("player__label_disabled");
     } else {
       this.volumeBtn.style.backgroundImage = "url('./images/icon-vol-sound.svg')";
-      this.volumeSlider.parentElement.classList.remove(
-        "player__label_disabled"
-      );
+      this.volumeSlider.parentElement.classList.remove("player__label_disabled");
     }
   }
 
   setVolume(value) {
-    this.volume = value / 100;
+    const newVolume = value / 100;
+    this.volume = newVolume;
 
     // Если громкость больше 0, автоматически выключаем mute
     if (this.volume > 0 && this.audio.muted) {
@@ -277,11 +250,17 @@ class RelaxPlayer {
       this.volumeBtn.style.backgroundImage = "url('./images/icon-vol-sound.svg')";
     }
 
-    if (this.isPlaying && !this.fadeInterval) {
+    if (this.isPlaying && !this.fadeAnimation) {
       this.audio.volume = this.volume;
     }
 
-    localStorage.setItem("relaxPlayerVolume", value);
+    // Debounce для сохранения в localStorage
+    if (this.saveVolumeTimeout) {
+      clearTimeout(this.saveVolumeTimeout);
+    }
+    this.saveVolumeTimeout = setTimeout(() => {
+      localStorage.setItem("relaxPlayerVolume", value);
+    }, 500);
   }
 
   onAudioLoaded() {
@@ -290,7 +269,7 @@ class RelaxPlayer {
 
   onAudioError(e) {
     console.error("Ошибка загрузки аудио:", e);
-    alert("Ошибка загрузки звука. Попробуйте другой вариант.");
+    // Не показываем alert, чтобы не раздражать пользователя, лучше логировать
   }
 
   onAudioEnded() {
@@ -298,6 +277,8 @@ class RelaxPlayer {
   }
 
   showIOSWarning(message = null) {
+    if (!this.iosWarning) return; // Безопасная проверка
+
     this.iosWarning.style.display = "block";
     if (message) {
       this.iosWarning.textContent = message;

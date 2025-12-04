@@ -1,16 +1,12 @@
 .contacts {
-    display: flex;
-    flex-direction: column;
-}
+  display: flex;
+  flex-direction: column;
 
-@media screen and (max-width: 960px) {
-    .contacts {
-         margin: 0 0 19px 0;
-    }
-}
+  @media (max-width: 960px) {
+    margin-bottom: 19px;
+  }
 
-@media screen and (max-width: 520px) {
-    .contacts {
-         margin: 0 0 21px 0;
-    }
+  @media (max-width: 520px) {
+    margin-bottom: 21px;
+  }
 }
