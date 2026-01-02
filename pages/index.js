@@ -43,6 +43,7 @@ class RelaxPlayer {
     this.initElements();
     this.bindEvents();
     this.setupAudio();
+    this.preloadImages();
 
     if (this.isIOS) {
       if (this.volumeSlider) this.volumeSlider.style.display = "none";
@@ -94,6 +95,14 @@ class RelaxPlayer {
 
     // Загружаем первый звук и фон
     this.handleContentChange();
+  }
+
+  // Загрузка всех изображений
+  preloadImages() {
+    Object.values(this.backgroundsImagesMap).forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
   }
 
   unlockAudio() {
