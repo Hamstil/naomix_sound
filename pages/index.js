@@ -141,7 +141,11 @@ class RelaxPlayer {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / this.fadeDuration, 1);
 
-      this.audio.volume = startVolume + (targetVolume - startVolume) * progress;
+      let newVolume = startVolume + (targetVolume - startVolume) * progress;
+      // Ограничиваем значение от 0 до 1, чтобы избежать IndexSizeError
+      newVolume = Math.max(0, Math.min(1, newVolume));
+
+      this.audio.volume = newVolume;
 
       if (progress < 1) {
         this.fadeAnimation = requestAnimationFrame(animate);
@@ -256,7 +260,12 @@ class RelaxPlayer {
   }
 
   setVolume(value) {
-    const newVolume = value / 100;
+    let newVolume = value / 100;
+
+    // Защита от некоректных значений
+    if (!isFinite(newVolume)) newVolume = 0.5;
+    newVolume = Math.max(0, Math.min(1, newVolume));
+
     this.volume = newVolume;
 
     // Если громкость больше 0, автоматически выключаем mute
