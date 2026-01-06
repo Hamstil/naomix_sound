@@ -18,11 +18,17 @@ class RelaxPlayer {
       fire_in_the_street: "sounds/fire_in_the_street.mp3",
       the_noise_of_the_forest: "sounds/the_noise_of_the_forest.mp3",
       wave_noise: "sounds/wave_noise.mp3",
-      the_sound_of_the_sea: "sounds/the_sound_of_the_sea.mp3",
+      the_sound_of_the_sea: "sounds/the_sound_of_the_sea_01.mp3",
       the_sound_of_the_spring: "sounds/the_sound_of_the_spring.mp3",
       crickets: "sounds/crickets.mp3",
       cicadas: "sounds/cicadas.mp3",
       in_the_cafe: "sounds/in_the_cafe.mp3",
+      the_hayloft: "sounds/the_hayloft.mp3",
+      rustling_of_leaves: "sounds/rustling_of_leaves.mp3",
+      frogs: "sounds/frogs.mp3",
+      purring_of_the_cat: "sounds/purring_of_the_cat.mp3",
+      birdsong: "sounds/birdsong.mp3",
+      blizzard: "sounds/blizzard.mp3",
     };
 
     this.backgroundsImagesMap = {
@@ -38,6 +44,12 @@ class RelaxPlayer {
       crickets: "images/img_bg/crickets_and_birds.webp",
       cicadas: "images/img_bg/tsykady.webp",
       in_the_cafe: "images/img_bg/in_cafe.webp",
+      the_hayloft: "images/img_bg/the_hayloft.webp",
+      rustling_of_leaves: "images/img_bg/rustling_of_leaves.webp",
+      frogs: "images/img_bg/frogs.webp",
+      purring_of_the_cat: "images/img_bg/purring_of_the_cat_01.webp",
+      birdsong: "images/img_bg/birdsong.webp",
+      blizzard: "images/img_bg/blizzard.webp",
     };
 
     this.initElements();
