@@ -207,6 +207,10 @@ class RelaxPlayer {
       this.audio.src = this.soundUrls[key];
     }
 
+    // Сброс таймера
+    this.timerSelect.value = "0";
+    this.clearTimer();
+
     if (this.isPlaying) {
       this.pause();
     }
