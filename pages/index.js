@@ -227,6 +227,7 @@ class RelaxPlayer {
           this.isPlaying = false;
           this.playPauseBtn.classList.remove("playing");
           this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
+          this.timerSelect.value = "0";
         } else {
           await this.pause();
           this.timerSelect.value = "0";
