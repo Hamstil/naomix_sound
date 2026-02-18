@@ -43,6 +43,7 @@
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
+@import url(../blocks/footer/__link/footer__link.css);
 @import url(../blocks/footer/__cookie/footer__cookie.css);
 @import url(../blocks/donations/donations.css);
 @import url(../blocks/donations/__info/donations__info.css);

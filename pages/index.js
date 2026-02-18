@@ -60,6 +60,8 @@ class RelaxPlayer {
       if (this.volumeSlider) this.volumeSlider.style.display = "none";
       this.showIOSWarning();
     }
+
+    this.updateCopyrightYear();
   }
 
   initElements() {
@@ -333,6 +335,13 @@ class RelaxPlayer {
     if (savedVolume) {
       this.volumeSlider.value = savedVolume;
       this.setVolume(savedVolume);
+    }
+  }
+  // Автоматическое обновление года в футере
+  updateCopyrightYear() {
+    const yearElement = document.getElementById("copyright-year");
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear();
     }
   }
 }

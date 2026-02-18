@@ -6,6 +6,9 @@
   font-weight: 500;
   line-height: 17px;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
   @media (max-width: 1700px) {
     max-width: 144px;

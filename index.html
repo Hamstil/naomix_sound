@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#3d3d3d" />
     <link rel="icon" href="./images/favicon_io/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon_io/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon_io/favicon-32x32.png" />
@@ -15,7 +16,7 @@
       content="Сервис naomix помогает быстрее заснуть с приятными звуками: дождя, звуком костра, трелями цикад и другими на ваш выбор. Можете ставить таймер, включать и выключать звуки."
     />
     <meta
-      name="Keywords"
+      name="keywords"
       content="приятные звуки, для сна, быстрее заснуть, настраиваемые звуки, таймер засыпания"
     />
     <meta name="author" content="staskargol" />
@@ -27,7 +28,7 @@
         src="./images/logo.svg"
         alt="Логотип наомикс"
         class="header__logo"
-        loading="lazy"
+        fetchpriority="high"
       />
     </header>
     <main class="content page__content">
@@ -136,7 +137,8 @@
     </main>
     <footer class="footer page__footer">
       <p class="footer__copyright">
-        Авторское право © 2025 Naomix. Все права защищены.
+        <a href="https://disk.yandex.ru/i/24dqxLvifVJvzQ" target="_blank" rel="noopener" class="footer__link">Инструкция: иконка на ваш телефон</a>
+        <span class="footer__copyright-text">Авторское право © <span id="copyright-year"></span> Naomix. Все права защищены.</span>
       </p>
       <p class="footer__cookie">
         Пользуясь сайтом вы соглашаетесь с применением технологии Cookie:
