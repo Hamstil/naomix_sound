@@ -9,4 +9,7 @@ Disallow: /blocks/
 Allow: /
 
 # Если позже появится карта сайта, раскомментируйте следующую строку и укажите ваш домен
-# Sitemap: https://ваш_домен/sitemap.xml
+Sitemap: https://naomix.ru/sitemap.xml
+
+# naomix.ru
+Clean-param: index.html

@@ -1,8 +1,16 @@
 ErrorDocument 404 /404.html
 
-RewriteEngine On
-
 # Проверка, что запрашиваемый файл не существует
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /404.html [L]
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule . /404.html [L]
+
+RewriteEngine on
+SetEnvIf X-Forwarded-Proto https SERVER_PORT=443
+SetEnvIf X-Forwarded-Proto https HTTPS=on
+RewriteCond %{HTTP:HTTPS} !=on [NC]
+RewriteRule ^(.*)$ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.naomix.ru$ [NC]
+RewriteRule ^(.*)$ https://naomix.ru/$1 [R=301,L]

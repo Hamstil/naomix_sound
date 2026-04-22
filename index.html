@@ -1,220 +1,210 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#3d3d3d" />
-    <link rel="icon" href="./images/favicon_io/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon_io/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon_io/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon_io/favicon-16x16.png" />
-    <link rel="manifest" href="./images/favicon_io/site.webmanifest" />
-    <link rel="stylesheet" href="./pages/index.css" />
-    <title>naomix | звуки природы слушать для сна от бессонницы, бесплатно онлайн</title>
-    <meta
-      name="description"
-      content="Сервис naomix помогает быстрее заснуть с приятными звуками: дождя, звуком костра, трелями цикад и другими на ваш выбор. Можете ставить таймер, включать и выключать звуки."
-    />
-    <meta
-      name="keywords"
-      content="звуки природы для сна релаксации, звуки для засыпания, как быстро заснуть, настраиваемые звуки, таймер отключения"
-    />
-    <meta name="author" content="staskargol" />
-  </head>
 
-  <body class="page">
-    <header class="header">
-      <img
-        src="./images/logo.svg"
-        alt="Логотип наомикс"
-        class="header__logo"
-        fetchpriority="high"
-      />
-    </header>
-    <main class="content page__content">
-      <section class="player">
-        <button
-          class="player__buttonPlayPause"
-          aria-label="Воспроизвести/пауза"
-        ></button>
-        <div class="player__select">
-          <img
-            src="./images/icon-equalizer.svg"
-            alt="Иконка эквалайзера"
-            class="player__icon-eq"
-          />
-          <div class="player__line"></div>
-          <select class="player__dropdown" aria-label="Выбор звука">
-            <option value="rain_in_the_forest">Дождь в лесу</option>
-            <option value="the_sound_of_rain">Шум дождя</option>
-            <option value="glucophone">Глюкофон</option>
-            <option value="the_fire_in_the_oven">Костер в камине</option>
-            <option value="fire_in_the_street">Звук костра</option>
-            <option value="the_noise_of_the_forest">Шум леса</option>
-            <option value="birdsong">Пение птиц</option>
-            <option value="wave_noise">Шум волны</option>
-            <option value="the_sound_of_the_sea">Шум моря</option>
-            <option value="the_sound_of_the_spring">Звук родника</option>
-            <option value="crickets">Сверчки</option>
-            <option value="cicadas">Цикады</option>
-            <option value="in_the_cafe">В кафе</option>
-            <option value="the_hayloft">Сеновал</option>
-            <option value="rustling_of_leaves">Шелест листьев</option>
-            <option value="purring_of_the_cat">Мурчание кота</option>
-            <option value="frogs">Лягушки</option>
-            <option value="blizzard">Вьюга</option>
-          </select>
-        </div>
-        <div class="player__controls">
-          <label class="player__label">
-            <span class="player__timerText">Таймер:</span>
-            <select class="player__timer">
-              <option value="0">Без таймера</option>
-              <option value="1">1 минута</option>
-              <option value="5">5 минут</option>
-              <option value="10">10 минут</option>
-              <option value="15">15 минут</option>
-              <option value="30">30 минут</option>
-              <option value="45">45 минут</option>
-              <option value="60">1 час</option>
-              <option value="90">1.5 часа</option>
-            </select>
-          </label>
-          <label class="player__label player__label_disabled">
-            <button class="player__volumeOnOff" aria-label="Включить/выключить звук"></button>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value="50"
-              class="player__volume"
-              aria-label="Громкость"
-            />
-          </label>
-        </div>
-      </section>
-      <section class="info">
-        <div class="info__block">
-          <h1 class="info__title info__title_width_one">
-            Звуки для сна, релакса и медитации
-          </h1>
-          <div class="info__line"></div>
-          <p class="info__text info__text_width_one">
-            Добро пожаловать в сервис «Наомикс»! Здесь звуки природы помогают
-            расслабиться и погрузиться в крепкий, здоровый сон.
-          </p>
-          <p class="info__subtitle">Как это работает:</p>
-          <ul class="info__list">
-            <li class="info__item">1. Выберите нужную категорию.</li>
-            <li class="info__item">2. Поставьте желаемое время на таймере.</li>
-            <li class="info__item">3. Нажмите «Плей».</li>
-            <li class="info__item">4. Приятных снов…</li>
-          </ul>
-        </div>
-        <div class="info__block">
-          <h2 class="info__title info__title_width_two">
-            Повысьте качество жизни
-          </h2>
-          <div class="info__line"></div>
-          <p class="info__text info__text_width_two">
-            Для осуществления мечты нужна энергия. Сон - наш верный помощник в
-            этом, как и сама природа. Отдохните от избытка информации, помогите
-            себе восстановить силы с помощью природы и сервиса «Наомикс».
-          </p>
-        </div>
-        <div class="info__block">
-          <h2 class="info__title info__title_width_three">
-            Наш эксклюзивный сервис для искушенных
-          </h2>
-          <div class="info__line"></div>
-          <p class="info__text info__text_width_three">
-            Несмотря на текущий простой функционал, совсем скоро вы сможете
-            настраивать более широкий арсенал звуков.
-          </p>
-          <p class="info__text">Ждите приглашения на этой странице.</p>
-        </div>
-      </section>
-    </main>
-    <footer class="footer page__footer">
-      <p class="footer__copyright">
-        <a href="./doc/naomix-icon-tel.pdf" target="_blank" rel="noopener" class="footer__link">Инструкция: иконка на ваш телефон</a>
-        <span class="footer__copyright-text">Авторское право © <span id="copyright-year"></span> Naomix. Все права защищены.</span>
-      </p>
-      <p class="footer__cookie">
-        Пользуясь сайтом вы соглашаетесь с применением технологии Cookie:
-        обработки и хранению данных на вашем устройстве. Это повсеместная
-        технология, обеспечивающая работу веб-страниц и корректному отображению
-        контента в вашем браузере.
-      </p>
-      <div class="donations">
-        <div class="donations__info">
-          <p class="donations__card">2202 2084 8104 7646</p>
-          <img
-            src="./images/copy.svg"
-            alt="Скопировать номер карты"
-            class="donations__icon-copy"
-            loading="lazy"
-          />
-          <p class="donations__text">Копировать</p>
-        </div>
-        <p class="donations__description">Донаты коту на печеньки. Спасибо!</p>
+<head>
+  <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0VLSGKVLFM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-0VLSGKVLFM');
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5GZD77XB');</script>
+  <!-- End Google Tag Manager -->
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=103952517', 'ym');
+
+    ym(103952517, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce: true, trackLinks: true });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/103952517" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#3d3d3d" />
+  <!--<link rel="canonical" href="https://naomix.ru" />-->
+  <link rel="icon" href="./images/favicon_io/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon_io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon_io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon_io/favicon-16x16.png" />
+  <link rel="manifest" href="./images/favicon_io/site.webmanifest" />
+  <link rel="stylesheet" href="./pages/index.css" />
+  <title>naomix | звуки природы слушать для сна | как быстро уснуть ночью</title>
+  <meta name="description"
+    content="Сервис naomix помогает быстрее заснуть с приятными звуками: дождя, звуком костра, трелями цикад и другими на ваш выбор. Можете ставить таймер, включать и выключать звуки." />
+  <meta name="keywords"
+    content="звуки природы для сна релаксации, звуки для засыпания, как быстро заснуть, настраиваемые звуки, таймер отключения" />
+  <meta name="author" content="staskargol" />
+</head>
+
+
+<body class="page">
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5GZD77XB" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <header class="header">
+    <img src="./images/logo.svg" alt="Логотип наомикс" class="header__logo" fetchpriority="high" />
+  </header>
+  <main class="content page__content">
+    <section class="player">
+      <button class="player__buttonPlayPause" aria-label="Воспроизвести/пауза"></button>
+      <div class="player__select">
+        <img src="./images/icon-equalizer.svg" alt="Иконка эквалайзера" class="player__icon-eq" />
+        <div class="player__line"></div>
+        <select class="player__dropdown" aria-label="Выбор звука">
+          <option value="rain_in_the_forest">Дождь в лесу</option>
+          <option value="the_sound_of_rain">Шум дождя</option>
+          <option value="glucophone">Глюкофон</option>
+          <option value="the_fire_in_the_oven">Костер в камине</option>
+          <option value="fire_in_the_street">Звук костра</option>
+          <option value="the_noise_of_the_forest">Шум леса</option>
+          <option value="birdsong">Пение птиц</option>
+          <option value="wave_noise">Шум волны</option>
+          <option value="the_sound_of_the_sea">Шум моря</option>
+          <option value="the_sound_of_the_spring">Звук родника</option>
+          <option value="crickets">Сверчки</option>
+          <option value="cicadas">Цикады</option>
+          <option value="in_the_cafe">В кафе</option>
+          <option value="the_hayloft">Сеновал</option>
+          <option value="rustling_of_leaves">Шелест листьев</option>
+          <option value="purring_of_the_cat">Мурчание кота</option>
+          <option value="frogs">Лягушки</option>
+          <option value="blizzard">Вьюга</option>
+        </select>
       </div>
-      <div class="contacts">
-        <div class="contacts__email">
-          <img
-            src="./images/icon-mail.svg"
-            alt="Иконка электронной почты"
-            class="contacts__icon-email"
-            loading="lazy"
-          />
-          <a href="mailto:support@naomix.ru" class="contacts__link"
-            >support@naomix.ru</a
-          >
-        </div>
-        <ul class="contacts__social">
-          <li class="contacts__social-item">
-            <a
-              href="https://vk.com/naomix_sound"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="contacts__social-link"
-              ><img
-                src="./images/social/icon-vk.svg"
-                alt="Иконка ВК"
-                class="contacts__social-img"
-                loading="lazy"
-            /></a>
-          </li>
-          <li class="contacts__social-item">
-            <a
-              href="https://rutube.ru/channel/66904645/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="contacts__social-link"
-              ><img
-                src="./images/social/icon-rutube.svg"
-                alt="Иконка Rutube"
-                class="contacts__social-img"
-                loading="lazy"
-            /></a>
-          </li>
-          <li class="contacts__social-item">
-            <a
-              href="https://t.me/naomix_sound"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="contacts__social-link"
-              ><img
-                src="./images/social/icon-telegram.svg"
-                alt="Иконка Telegram"
-                class="contacts__social-img"
-                loading="lazy"
-            /></a>
-          </li>
+      <div class="player__controls">
+        <label class="player__label">
+          <span class="player__timerText">Таймер:</span>
+          <select class="player__timer">
+            <option value="0">Без таймера</option>
+            <option value="1">1 минута</option>
+            <option value="5">5 минут</option>
+            <option value="10">10 минут</option>
+            <option value="15">15 минут</option>
+            <option value="30">30 минут</option>
+            <option value="45">45 минут</option>
+            <option value="60">1 час</option>
+            <option value="90">1.5 часа</option>
+          </select>
+        </label>
+        <label class="player__label player__label_disabled">
+          <button class="player__volumeOnOff" aria-label="Включить/выключить звук"></button>
+          <input type="range" min="0" max="100" value="50" class="player__volume" aria-label="Громкость" />
+        </label>
+      </div>
+    </section>
+    <section class="info">
+      <div class="info__block">
+        <h1 class="info__title info__title_width_one">
+          Звуки для сна, релакса и медитации
+        </h1>
+        <div class="info__line"></div>
+        <p class="info__text info__text_width_one">
+          Добро пожаловать в сервис «Наомикс»! Здесь звуки природы помогают
+          расслабиться и погрузиться в крепкий, здоровый сон.
+        </p>
+        <p class="info__subtitle">Как это работает:</p>
+        <ul class="info__list">
+          <li class="info__item">1. Выберите нужную категорию.</li>
+          <li class="info__item">2. Поставьте желаемое время на таймере.</li>
+          <li class="info__item">3. Нажмите «Плей».</li>
+          <li class="info__item">4. Приятных снов…</li>
         </ul>
       </div>
-    </footer>
+      <div class="info__block">
+        <h2 class="info__title info__title_width_two">
+          Повысьте качество жизни
+        </h2>
+        <div class="info__line"></div>
+        <p class="info__text info__text_width_two">
+          Для осуществления мечты нужна энергия. Сон - наш верный помощник в
+          этом, как и сама природа. Отдохните от избытка информации, помогите
+          себе восстановить силы с помощью природы и сервиса «Наомикс».
+        </p>
+      </div>
+      <div class="info__block">
+        <h2 class="info__title info__title_width_three">
+          Наш эксклюзивный сервис для искушенных
+        </h2>
+        <div class="info__line"></div>
+        <p class="info__text info__text_width_three">
+          Несмотря на текущий простой функционал, совсем скоро вы сможете
+          настраивать более широкий арсенал звуков.
+        </p>
+        <p class="info__text">Ждите приглашения на этой странице.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="footer page__footer">
+    <p class="footer__copyright">
+      <a href="./doc/naomix-icon-tel.pdf" target="_blank" rel="noopener" class="footer__link">Инструкция: иконка на ваш
+        телефон</a>
+      <span class="footer__copyright-text">Авторское право © <span id="copyright-year"></span> Naomix. Все права
+        защищены.</span>
+    </p>
+    <p class="footer__cookie">
+      Пользуясь сайтом вы соглашаетесь с применением технологии Cookie:
+      обработки и хранению данных на вашем устройстве. Это повсеместная
+      технология, обеспечивающая работу веб-страниц и корректному отображению
+      контента в вашем браузере.
+    </p>
+    <div class="donations">
+      <div class="donations__info">
+        <p class="donations__card">2202 2084 8104 7646</p>
+        <img src="./images/copy.svg" alt="Скопировать номер карты" class="donations__icon-copy" loading="lazy" />
+        <p class="donations__text">Копировать</p>
+      </div>
+      <p class="donations__description">Донаты на развитие проекта. Спасибо!</p>
+    </div>
+    <div class="contacts">
+      <div class="contacts__email">
+        <img src="./images/icon-mail.svg" alt="Иконка электронной почты" class="contacts__icon-email" loading="lazy" />
+        <a href="mailto:support@naomix.ru" class="contacts__link">support@naomix.ru</a>
+      </div>
+      <ul class="contacts__social">
+        <li class="contacts__social-item">
+          <a href="https://vk.com/naomix_sound" target="_blank" rel="noopener noreferrer"
+            class="contacts__social-link"><img src="./images/social/icon-vk.svg" alt="Иконка ВК"
+              class="contacts__social-img" loading="lazy" /></a>
+        </li>
+        <li class="contacts__social-item">
+          <a href="https://rutube.ru/channel/66904645/" target="_blank" rel="noopener noreferrer"
+            class="contacts__social-link"><img src="./images/social/icon-rutube.svg" alt="Иконка Rutube"
+              class="contacts__social-img" loading="lazy" /></a>
+        </li>
+        <li class="contacts__social-item">
+          <a href="https://t.me/naomix_sound" target="_blank" rel="noopener noreferrer"
+            class="contacts__social-link"><img src="./images/social/icon-telegram.svg" alt="Иконка Telegram"
+              class="contacts__social-img" loading="lazy" /></a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+  <script src="./pages/index.js"></script>
+</body>
 
-    <script src="./pages/index.js"></script>
-  </body>
 </html>
