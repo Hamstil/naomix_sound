@@ -30,6 +30,7 @@
 @import url(../blocks/player/__volume/player__volume.css);
 
 @import url(../blocks/info/info.css);
+@import url(../blocks/info/__block/info__block.css);
 @import url(../blocks/info/__title/info__title.css);
 @import url(../blocks/info/__title/_width/info__title_width_one.css);
 @import url(../blocks/info/__title/_width/info__title_width_two.css);

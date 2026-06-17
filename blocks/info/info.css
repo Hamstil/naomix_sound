@@ -23,3 +23,7 @@
     padding-block: 26px 30px;
   }
 }
+
+.info:last-child {
+  padding: 0 0 38px 0;
+}
