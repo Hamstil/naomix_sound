@@ -24,6 +24,7 @@
 @import url(../blocks/player/__checkbox-timer/player__checkbox-timer.css);
 @import url(../blocks/player/__checkmark/player__checkmark.css);
 @import url(../blocks/player/__timerText/player__timerText.css);
+@import url(../blocks/player/__timerSelect/player__timerSelect.css);
 @import url(../blocks/player/__timer/player__timer.css);
 @import url(../blocks/player/__volumeOnOff/player__volumeOnOff.css);
 @import url(../blocks/player/__volume/player__volume.css);
@@ -43,18 +44,13 @@
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
-@import url(../blocks/footer/__link/footer__link.css);
+
 @import url(../blocks/footer/__cookie/footer__cookie.css);
-@import url(../blocks/donations/donations.css);
-@import url(../blocks/donations/__info/donations__info.css);
-@import url(../blocks/donations/__card/donations__card.css);
-@import url(../blocks/donations/__icon-copy/donations__icon-copy.css);
-@import url(../blocks/donations/__text/donations__text.css);
-@import url(../blocks/donations/__description/donations__description.css);
+@import url(../blocks/legal/legal.css);
+@import url(../blocks/legal/__link/label__link.css);
 @import url(../blocks/contacts/contacts.css);
 @import url(../blocks/contacts/__email/contacts__email.css);
 @import url(../blocks/contacts/__icon-email/contacts__icon-email.css);
 @import url(../blocks/contacts/__link/contacts__link.css);
 @import url(../blocks/contacts/__social/contacts__social.css);
 @import url(../blocks/contacts/__social-img/contacts__social-img.css);
-

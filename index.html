@@ -131,17 +131,19 @@
         <div class="player__controls">
           <label class="player__label">
             <span class="player__timerText">Таймер:</span>
-            <select class="player__timer">
-              <option value="0">Без таймера</option>
-              <option value="1">1 минута</option>
-              <option value="5">5 минут</option>
-              <option value="10">10 минут</option>
-              <option value="15">15 минут</option>
-              <option value="30">30 минут</option>
-              <option value="45">45 минут</option>
-              <option value="60">1 час</option>
-              <option value="90">1.5 часа</option>
-            </select>
+            <div class="player__timerSelect">
+              <select class="player__timer">
+                <option value="0">Без таймера</option>
+                <option value="1">1 минута</option>
+                <option value="5">5 минут</option>
+                <option value="10">10 минут</option>
+                <option value="15">15 минут</option>
+                <option value="30">30 минут</option>
+                <option value="45">45 минут</option>
+                <option value="60">1 час</option>
+                <option value="90">1.5 часа</option>
+              </select>
+            </div>
           </label>
           <label class="player__label player__label_disabled">
             <button
@@ -200,42 +202,67 @@
           <p class="info__text">Ждите приглашения на этой странице.</p>
         </div>
       </section>
+      <section class="info">
+        <div class="info__block">
+          <h1 class="info__title info__title_width_one">
+            Звуки для сна, релакса и медитации
+          </h1>
+          <div class="info__line"></div>
+          <p class="info__text info__text_width_one">
+            Добро пожаловать в сервис «Наомикс»! Здесь звуки природы помогают
+            расслабиться и погрузиться в крепкий, здоровый сон.
+          </p>
+          <p class="info__subtitle">Как это работает:</p>
+          <ul class="info__list">
+            <li class="info__item">1. Выберите нужную категорию.</li>
+            <li class="info__item">2. Поставьте желаемое время на таймере.</li>
+            <li class="info__item">3. Нажмите «Плей».</li>
+            <li class="info__item">4. Приятных снов…</li>
+          </ul>
+        </div>
+        <div class="info__block">
+          <h2 class="info__title info__title_width_two">
+            Повысьте качество жизни
+          </h2>
+          <div class="info__line"></div>
+          <p class="info__text info__text_width_two">
+            Для осуществления мечты нужна энергия. Сон - наш верный помощник в
+            этом, как и сама природа. Отдохните от избытка информации, помогите
+            себе восстановить силы с помощью природы и сервиса «Наомикс».
+          </p>
+        </div>
+        <div class="info__block">
+          <h2 class="info__title info__title_width_three">
+            Наш эксклюзивный сервис для искушенных
+          </h2>
+          <div class="info__line"></div>
+          <p class="info__text info__text_width_three">
+            Несмотря на текущий простой функционал, совсем скоро вы сможете
+            настраивать более широкий арсенал звуков.
+          </p>
+          <p class="info__text">Ждите приглашения на этой странице.</p>
+        </div>
+      </section>
     </main>
     <footer class="footer page__footer">
       <p class="footer__copyright">
-        <a
-          href="./doc/naomix-icon-tel.pdf"
-          target="_blank"
-          rel="noopener"
-          class="footer__link"
-          >Инструкция: иконка на ваш телефон</a
-        >
         <span class="footer__copyright-text"
           >Авторское право © <span id="copyright-year"></span> Naomix. Все права
           защищены.</span
         >
       </p>
+      <div class="legal">
+        <a href="#" class="label__link">Пользовательское соглашение</a>
+        <a href="./doc/politika-naomix.pdf" class="label__link"
+          >Конфиденциальность</a
+        >
+      </div>
       <p class="footer__cookie">
         Пользуясь сайтом вы соглашаетесь с применением технологии Cookie:
         обработки и хранению данных на вашем устройстве. Это повсеместная
         технология, обеспечивающая работу веб-страниц и корректному отображению
         контента в вашем браузере.
       </p>
-      <div class="donations">
-        <div class="donations__info">
-          <p class="donations__card">2202 2084 8104 7646</p>
-          <img
-            src="./images/copy.svg"
-            alt="Скопировать номер карты"
-            class="donations__icon-copy"
-            loading="lazy"
-          />
-          <p class="donations__text">Копировать</p>
-        </div>
-        <p class="donations__description">
-          Донаты на развитие проекта. Спасибо!
-        </p>
-      </div>
       <div class="contacts">
         <div class="contacts__email">
           <img
@@ -277,13 +304,13 @@
           </li>
           <li class="contacts__social-item">
             <a
-              href="https://t.me/naomix_sound"
+              href="https://dzen.ru/naomix"
               target="_blank"
               rel="noopener noreferrer"
               class="contacts__social-link"
               ><img
-                src="./images/social/icon-telegram.svg"
-                alt="Иконка Telegram"
+                src="./images/social/icon-dzen.svg"
+                alt="Иконка Дзен"
                 class="contacts__social-img"
                 loading="lazy"
             /></a>

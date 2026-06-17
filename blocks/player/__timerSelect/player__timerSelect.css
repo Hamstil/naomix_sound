@@ -1,0 +1,28 @@
+.player__timerSelect {
+  box-sizing: border-box;
+  display: inline-block;
+  margin-right: 34px;
+  background-color: #fff;
+  border-radius: 50px;
+  overflow: hidden;
+
+  @media (max-width: 1700px) {
+    margin-right: 25px;
+  }
+
+  @media (max-width: 1200px) {
+    margin-right: 19px;
+  }
+
+  @media (max-width: 960px) {
+    margin-right: 18px;
+  }
+
+  @media (max-width: 520px) {
+    margin-right: 16px;
+  }
+
+  @media (max-width: 320px) {
+    margin-right: 10px;
+  }
+}
