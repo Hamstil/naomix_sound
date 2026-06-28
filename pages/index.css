@@ -51,6 +51,7 @@
 @import url(../blocks/info/__text/_width/info__text_width_five.css);
 @import url(../blocks/info/__text/_width/info__text_width_six.css);
 @import url(../blocks/info/__btn/info__btn.css);
+@import url(../blocks/info/__link/info__link.css);
 @import url(../blocks/info/__date/info__date.css);
 @import url(../blocks/info/__subtitle/info__subtitle.css);
 @import url(../blocks/info/__list/info__list.css);
