@@ -1,0 +1,12 @@
+.info__date {
+  display: block;
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.78; /* 32/18 ≈ 1.78 — пропорционально масштабируется */
+  font-weight: 600;
+  color: #fff;
+
+  @media (max-width: 1780px) {
+    font-size: 13px;
+  }
+}

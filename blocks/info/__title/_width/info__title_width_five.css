@@ -1,0 +1,15 @@
+.info__title_width_five {
+  max-width: 436px;
+
+  @media (max-width: 1780px) {
+    max-width: 276px;
+  }
+
+  @media (max-width: 1200px) {
+    max-width: 234px;
+  }
+
+  @media (max-width: 1060px) {
+    max-width: 260px;
+  }
+}

@@ -1,0 +1,7 @@
+.info__block_item_5 {
+  justify-self: center;
+
+  @media (max-width: 1060px) {
+    justify-self: start;
+  }
+}

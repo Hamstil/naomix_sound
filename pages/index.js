@@ -71,7 +71,6 @@ class RelaxPlayer {
     this.volumeBtn = document.querySelector(".player__volumeOnOff");
     this.volumeSlider = document.querySelector(".player__volume");
     this.iconEQ = document.querySelector(".player__icon-eq");
-    this.donationsCardBtn = document.querySelector(".donations__icon-copy");
     this.cardNomber = document.querySelector(".donations__card");
     this.iosWarning = document.getElementById("ios-warning");
     this.backgroundImagePage = document.querySelector(".page");
@@ -83,7 +82,6 @@ class RelaxPlayer {
     this.dropdown.addEventListener("change", () => this.handleContentChange());
     this.timerSelect.addEventListener("change", () => this.setTimer());
     this.volumeBtn.addEventListener("click", () => this.toggleMute());
-    this.donationsCardBtn.addEventListener("click", () => this.cardDonatCopy());
     this.volumeSlider.addEventListener("input", (e) =>
       this.setVolume(e.target.value)
     );
@@ -315,18 +313,6 @@ class RelaxPlayer {
     setTimeout(() => {
       this.iosWarning.style.display = "none";
     }, 5000);
-  }
-
-  async cardDonatCopy() {
-    try {
-      await navigator.clipboard.writeText(this.cardNomber.textContent);
-      this.donationsCardBtn.setAttribute("src", "./images/copy-ok.svg");
-      setTimeout(() => {
-        this.donationsCardBtn.setAttribute("src", "./images/copy.svg");
-      }, 2000);
-    } catch (err) {
-      console.error("Ошибка копирования номера карты: ", err);
-    }
   }
 
   // Восстановление настроек из localStorage

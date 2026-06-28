@@ -31,24 +31,35 @@
 
 @import url(../blocks/info/info.css);
 @import url(../blocks/info/__block/info__block.css);
+@import url(../blocks/info/__block/_item/info__block_item_1.css);
+@import url(../blocks/info/__block/_item/info__block_item_2.css);
+@import url(../blocks/info/__block/_item/info__block_item_3.css);
+@import url(../blocks/info/__block/_item/info__block_item_4.css);
+@import url(../blocks/info/__block/_item/info__block_item_5.css);
+@import url(../blocks/info/__block/_item/info__block_item_6.css);
 @import url(../blocks/info/__title/info__title.css);
 @import url(../blocks/info/__title/_width/info__title_width_one.css);
 @import url(../blocks/info/__title/_width/info__title_width_two.css);
 @import url(../blocks/info/__title/_width/info__title_width_three.css);
+@import url(../blocks/info/__title/_width/info__title_width_five.css);
+@import url(../blocks/info/__title/_width/info__title_width_six.css);
 @import url(../blocks/info/__line/info__line.css);
 @import url(../blocks/info/__text/info__text.css);
 @import url(../blocks/info/__text/_width/info__text_width_one.css);
 @import url(../blocks/info/__text/_width/info__text_width_two.css);
 @import url(../blocks/info/__text/_width/info__text_width_three.css);
+@import url(../blocks/info/__text/_width/info__text_width_five.css);
+@import url(../blocks/info/__text/_width/info__text_width_six.css);
+@import url(../blocks/info/__btn/info__btn.css);
+@import url(../blocks/info/__date/info__date.css);
 @import url(../blocks/info/__subtitle/info__subtitle.css);
 @import url(../blocks/info/__list/info__list.css);
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
-
 @import url(../blocks/footer/__cookie/footer__cookie.css);
 @import url(../blocks/legal/legal.css);
-@import url(../blocks/legal/__link/label__link.css);
+@import url(../blocks/legal/__link/lagel__link.css);
 @import url(../blocks/contacts/contacts.css);
 @import url(../blocks/contacts/__email/contacts__email.css);
 @import url(../blocks/contacts/__icon-email/contacts__icon-email.css);

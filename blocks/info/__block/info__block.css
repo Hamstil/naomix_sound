@@ -1,3 +1,20 @@
-.info__block {
-  max-width: 490px;
+@media (max-width: 768px) {
+  .info__block:nth-child(1) {
+    order: 2;
+  } /* первый станет вторым */
+  .info__block:nth-child(2) {
+    order: 1;
+  }
+  .info__block:nth-child(3) {
+    order: 4;
+  }
+  .info__block:nth-child(4) {
+    order: 3;
+  } /* новости – первыми */
+  .info__block:nth-child(5) {
+    order: 5;
+  }
+  .info__block:nth-child(6) {
+    order: 6;
+  }
 }

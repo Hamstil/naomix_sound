@@ -1,12 +1,12 @@
 .info__title_width_two {
-  max-width: 316px;
+  max-width: 436px;
 
   @media (max-width: 1780px) {
-    max-width: 211px;
+    max-width: 296px;
   }
 
   @media (max-width: 1200px) {
-    max-width: 169px;
+    max-width: 234px;
   }
 
   @media (max-width: 1060px) {

@@ -1,29 +1,42 @@
 .info {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
   padding: 98px 0 38px;
+  justify-items: stretch;
+}
 
-  @media (max-width: 1780px) {
+@media (max-width: 1780px) {
+  .info {
     padding-block: 87px 25px;
-  }
-
-  @media (max-width: 1200px) {
-    padding-block: 67px 33px;
-  }
-
-  @media (max-width: 1060px) {
-    flex-direction: column;
-    row-gap: 33px;
-    padding-block: 44px 29px;
-  }
-
-  @media (max-width: 520px) {
-    row-gap: 30px;
-    padding-block: 26px 30px;
   }
 }
 
-.info:last-child {
-  padding: 0 0 38px 0;
+@media (max-width: 1280px) {
+  .info {
+    padding-block: 67px 33px;
+  }
+}
+
+@media (max-width: 1060px) {
+  .info {
+    grid-template-columns: repeat(2, 1fr);
+    padding-block: 44px 29px;
+    justify-items: self-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+  }
+}
+
+/* Смартфон: 1 колонка */
+@media (max-width: 520px) {
+  .info {
+    padding-block: 26px 30px;
+  }
 }

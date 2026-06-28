@@ -1,29 +1,29 @@
 .legal {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   max-width: 394px;
-  row-gap: 15px;
+  gap: 15px;
 
+  /* Адаптивные стили */
   @media (max-width: 1700px) {
     max-width: 277px;
-    row-gap: 10px;
+    gap: 10px;
   }
 
   @media (max-width: 1200px) {
     max-width: 246px;
-    row-gap: 7px;
+    gap: 7px;
   }
 
   @media (max-width: 960px) {
     max-width: 277px;
     margin-bottom: 26px;
-    row-gap: 9px;
+    gap: 9px;
   }
 
   @media (max-width: 520px) {
     max-width: 264px;
     margin-bottom: 23px;
-    row-gap: 10px;
+    gap: 10px;
   }
 }

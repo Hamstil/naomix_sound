@@ -1,15 +1,15 @@
 .info__text_width_two {
-  max-width: 453px;
+  max-width: 434px;
 
   @media (max-width: 1780px) {
-    max-width: 317px;
+    max-width: 312px;
   }
 
   @media (max-width: 1200px) {
-    max-width: 253px;
+    max-width: 268px;
   }
 
   @media (max-width: 1060px) {
-    max-width: 451px;
+    max-width: 447px;
   }
 }

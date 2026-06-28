@@ -1,0 +1,15 @@
+.info__text_width_six {
+  max-width: 460px;
+
+  @media (max-width: 1780px) {
+    max-width: 324px;
+  }
+
+  @media (max-width: 1200px) {
+    max-width: 324px;
+  }
+
+  @media (max-width: 1060px) {
+    max-width: 447px;
+  }
+}
