@@ -5,6 +5,7 @@
   line-height: 1.23; /* ~27px / 22px */
   color: #000;
   text-align: center;
+  text-align-last: center;
   border: none;
   cursor: pointer;
   -webkit-appearance: none;
@@ -36,16 +37,11 @@
   }
 
   @media (max-width: 960px) {
-    background-size: 12px;
     font-size: 13px;
     line-height: 1.23; /* ~16px / 13px */
   }
 
   @media (max-width: 768px) {
     padding: 9px 48px 11px 22px;
-  }
-
-  @media (max-width: 520px) {
-    background-size: 10px;
   }
 }
