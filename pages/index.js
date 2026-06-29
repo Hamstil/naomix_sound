@@ -8,6 +8,8 @@ class RelaxPlayer {
     this.volume = 0.5;
     this.fadeAnimation = null;
     this.fadeDuration = 1000; // Длительность затухания/нарастания в мс
+    this.backgroundFadeDuration = 800;
+    this.backgroundTransitionId = 0;
     this.saveVolumeTimeout = null;
 
     this.soundUrls = {
@@ -74,6 +76,29 @@ class RelaxPlayer {
     this.cardNomber = document.querySelector(".donations__card");
     this.iosWarning = document.getElementById("ios-warning");
     this.backgroundImagePage = document.querySelector(".page");
+    this.backgroundLayerCurrent = null;
+    this.backgroundLayerNext = null;
+
+    this.initBackgroundLayers();
+  }
+
+  initBackgroundLayers() {
+    if (!this.backgroundImagePage) return;
+
+    const background = document.createElement("div");
+    background.className = "page__background";
+
+    this.backgroundLayerCurrent = document.createElement("div");
+    this.backgroundLayerCurrent.className =
+      "page__background-layer page__background-layer_current";
+
+    this.backgroundLayerNext = document.createElement("div");
+    this.backgroundLayerNext.className =
+      "page__background-layer page__background-layer_next";
+
+    background.append(this.backgroundLayerCurrent, this.backgroundLayerNext);
+    this.backgroundImagePage.prepend(background);
+    this.backgroundImagePage.classList.add("page_background-ready");
   }
 
   bindEvents() {
@@ -197,9 +222,8 @@ class RelaxPlayer {
     const key = this.dropdown.value;
     this.currentSound = key;
 
-    // Смена фона
     if (this.backgroundsImagesMap[key]) {
-      this.backgroundImagePage.style.backgroundImage = `url(${this.backgroundsImagesMap[key]})`;
+      this.setBackgroundImage(this.backgroundsImagesMap[key]);
     }
 
     // Смена аудио
@@ -214,6 +238,46 @@ class RelaxPlayer {
     if (this.isPlaying) {
       this.pause();
     }
+  }
+
+  setBackgroundImage(imageUrl) {
+    if (!this.backgroundLayerCurrent || !this.backgroundLayerNext) {
+      if (this.backgroundImagePage) {
+        this.backgroundImagePage.style.backgroundImage = `url(${imageUrl})`;
+      }
+      return;
+    }
+
+    if (this.currentBackgroundImage === imageUrl) return;
+
+    const transitionId = ++this.backgroundTransitionId;
+    const nextImage = new Image();
+
+    nextImage.onload = () => {
+      if (transitionId !== this.backgroundTransitionId) return;
+
+      if (!this.currentBackgroundImage) {
+        this.backgroundLayerCurrent.style.backgroundImage = `url(${imageUrl})`;
+        this.currentBackgroundImage = imageUrl;
+        return;
+      }
+
+      this.backgroundLayerNext.style.transitionDuration = `${this.backgroundFadeDuration}ms`;
+      this.backgroundLayerNext.style.backgroundImage = `url(${imageUrl})`;
+      this.backgroundLayerNext.classList.add("page__background-layer_visible");
+
+      window.setTimeout(() => {
+        if (transitionId !== this.backgroundTransitionId) return;
+
+        this.backgroundLayerCurrent.style.backgroundImage = `url(${imageUrl})`;
+        this.backgroundLayerNext.classList.remove(
+          "page__background-layer_visible"
+        );
+        this.currentBackgroundImage = imageUrl;
+      }, this.backgroundFadeDuration);
+    };
+
+    nextImage.src = imageUrl;
   }
 
   async setTimer() {
