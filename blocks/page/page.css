@@ -1,5 +1,6 @@
 .page {
-  background: #3d3d3d url("../../images/img_bg/rain_in_the_forest.webp") center / cover no-repeat;
+  background: #3d3d3d url("../../images/img_bg/rain_in_the_forest.webp")
+    center / cover no-repeat;
   position: relative;
   isolation: isolate;
   max-width: 1920px;
@@ -22,7 +23,7 @@
 }
 
 .page__background {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
