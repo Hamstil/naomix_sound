@@ -1,25 +1,14 @@
 .info__link {
   background-color: transparent;
   color: white;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   font-weight: 500;
   position: relative;
   display: inline-block; /* Чтобы ::after работал корректно */
   transition:
     opacity 0.3s ease,
     text-shadow 0.3s ease;
-}
-
-/* Псевдоэлемент для линии подчеркивания */
-.info__link::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 2px; /* Толщина линии */
-  bottom: 0.1em; /* Позиция под текстом */
-  left: 0;
-  background-color: white;
-  transition: width 0.3s ease;
 }
 
 /* Анимация по наведению */
