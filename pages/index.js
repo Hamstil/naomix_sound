@@ -3,10 +3,22 @@ class RelaxPlayer {
     this.audio = new Audio();
     this.nextAudio = new Audio();
     this.audioElements = [this.audio, this.nextAudio];
+    this.audioContext = null;
+    this.masterGain = null;
+    this.audioBufferCache = {};
+    this.audioMode = "html";
+    this.currentBuffer = null;
+    this.currentSoundUrl = null;
+    this.webAudioSources = [];
+    this.webAudioStartTime = 0;
+    this.webAudioOffset = 0;
+    this.webAudioScheduleAhead = 10 * 60 * 60; // Планируем повторы на долгий фоновый режим
+    this.maxScheduledSources = 1500;
     this.isPlaying = false;
     this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     this.currentSound = null;
     this.timer = null;
+    this.isMuted = false;
     this.volume = 0.5;
     this.fadeAnimation = null;
     this.fadeResolve = null;
@@ -145,14 +157,159 @@ class RelaxPlayer {
   }
 
   unlockAudio() {
+    const audioContext = this.getAudioContext();
+
+    if (!audioContext) return;
+
+    if (audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+
     // Для iOS: создаем и воспроизводим пустой звук
-    const silentBuffer = new AudioContext();
-    const source = silentBuffer.createBufferSource();
-    source.buffer = silentBuffer.createBuffer(1, 1, 22050);
-    source.connect(silentBuffer.destination);
+    const source = audioContext.createBufferSource();
+    source.buffer = audioContext.createBuffer(1, 1, 22050);
+    source.connect(this.masterGain);
     source.start(0);
 
     console.log("Аудио разблокировано для iOS");
+  }
+
+  getAudioContext() {
+    if (this.audioContext) return this.audioContext;
+
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextClass) return null;
+
+    this.audioContext = new AudioContextClass();
+    this.masterGain = this.audioContext.createGain();
+    this.masterGain.gain.value = 0;
+    this.masterGain.connect(this.audioContext.destination);
+
+    return this.audioContext;
+  }
+
+  decodeAudioData(audioContext, arrayBuffer) {
+    return new Promise((resolve, reject) => {
+      const decoding = audioContext.decodeAudioData(arrayBuffer, resolve, reject);
+
+      if (decoding && typeof decoding.then === "function") {
+        decoding.then(resolve).catch(reject);
+      }
+    });
+  }
+
+  async loadAudioBuffer(src) {
+    if (this.audioBufferCache[src]) {
+      return this.audioBufferCache[src];
+    }
+
+    const audioContext = this.getAudioContext();
+
+    if (!audioContext) {
+      throw new Error("Web Audio API недоступен");
+    }
+
+    const response = await fetch(src);
+
+    if (!response.ok) {
+      throw new Error(`Не удалось загрузить аудио: ${src}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await this.decodeAudioData(audioContext, arrayBuffer);
+    this.audioBufferCache[src] = audioBuffer;
+
+    return audioBuffer;
+  }
+
+  getCrossfadeSeconds(buffer) {
+    return Math.min(this.crossfadeDuration / 1000, buffer.duration / 2);
+  }
+
+  getLoopInterval(buffer) {
+    return Math.max(0.25, buffer.duration - this.getCrossfadeSeconds(buffer));
+  }
+
+  getOutputVolume() {
+    return this.isMuted ? 0 : this.volume;
+  }
+
+  setMasterGain(value) {
+    if (!this.audioContext || !this.masterGain) return;
+
+    const safeVolume = Math.max(0, Math.min(1, value));
+    const now = this.audioContext.currentTime;
+
+    this.masterGain.gain.cancelScheduledValues(now);
+    this.masterGain.gain.setValueAtTime(safeVolume, now);
+  }
+
+  clearWebAudioSources() {
+    this.webAudioSources.forEach(({ source }) => {
+      try {
+        source.stop(0);
+      } catch (error) {
+        // Источник мог уже завершиться сам.
+      }
+
+      try {
+        source.disconnect();
+      } catch (error) {
+        // Источник мог уже быть отключен.
+      }
+    });
+
+    this.webAudioSources = [];
+  }
+
+  scheduleWebAudioSource(startTime, offset = 0) {
+    if (!this.audioContext || !this.masterGain || !this.currentBuffer) return;
+
+    const source = this.audioContext.createBufferSource();
+    const safeOffset = Math.max(
+      0,
+      Math.min(offset, Math.max(0, this.currentBuffer.duration - 0.01))
+    );
+
+    source.buffer = this.currentBuffer;
+    source.connect(this.masterGain);
+    source.start(startTime, safeOffset);
+    source.addEventListener("ended", () => {
+      try {
+        source.disconnect();
+      } catch (error) {
+        // Источник мог уже быть отключен при остановке.
+      }
+    });
+
+    this.webAudioSources.push({ source, startTime });
+  }
+
+  scheduleWebAudioLoops(offset = 0) {
+    if (!this.audioContext || !this.currentBuffer) return;
+
+    const now = this.audioContext.currentTime;
+    const loopInterval = this.getLoopInterval(this.currentBuffer);
+    const scheduleUntil = now + this.webAudioScheduleAhead;
+    const safeOffset = Math.max(0, Math.min(offset, loopInterval));
+    let nextStartTime = now;
+    let scheduledCount = 0;
+
+    this.clearWebAudioSources();
+    this.scheduleWebAudioSource(nextStartTime, safeOffset);
+    scheduledCount += 1;
+
+    nextStartTime += Math.max(0, loopInterval - safeOffset);
+
+    while (
+      nextStartTime < scheduleUntil &&
+      scheduledCount < this.maxScheduledSources
+    ) {
+      this.scheduleWebAudioSource(nextStartTime);
+      nextStartTime += loopInterval;
+      scheduledCount += 1;
+    }
   }
 
   getInactiveAudio() {
@@ -160,17 +317,20 @@ class RelaxPlayer {
   }
 
   setAudioSource(src) {
-    const isMuted = this.audio.muted;
-
     this.stopLoopMonitor();
+    this.clearWebAudioSources();
     this.isCrossfading = false;
     this.audioTransitionId += 1;
+    this.audioMode = "html";
+    this.currentSoundUrl = src;
+    this.currentBuffer = null;
+    this.webAudioOffset = 0;
     this.audio = this.audioElements[0];
 
     this.audioElements.forEach((audio) => {
       audio.pause();
       audio.loop = false;
-      audio.muted = isMuted;
+      audio.muted = this.isMuted;
       audio.volume = 0;
       audio.src = src;
       audio.load();
@@ -183,6 +343,10 @@ class RelaxPlayer {
     this.audioElements.forEach((audio) => {
       audio.volume = safeVolume;
     });
+
+    if (this.audioMode === "webAudio") {
+      this.setMasterGain(this.getOutputVolume());
+    }
   }
 
   pauseAudioElements() {
@@ -275,8 +439,21 @@ class RelaxPlayer {
       this.fadeResolve = null;
     }
 
+    const safeTargetVolume = Math.max(0, Math.min(1, targetVolume));
     const startVolumes = this.audioElements.map((audio) => audio.volume);
     const startTime = performance.now();
+
+    if (this.audioContext && this.masterGain) {
+      const now = this.audioContext.currentTime;
+      const fadeSeconds = this.fadeDuration / 1000;
+
+      this.masterGain.gain.cancelScheduledValues(now);
+      this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
+      this.masterGain.gain.linearRampToValueAtTime(
+        safeTargetVolume,
+        now + fadeSeconds
+      );
+    }
 
     return new Promise((resolve) => {
       this.fadeResolve = resolve;
@@ -287,7 +464,8 @@ class RelaxPlayer {
 
         this.audioElements.forEach((audio, index) => {
           let newVolume =
-            startVolumes[index] + (targetVolume - startVolumes[index]) * progress;
+            startVolumes[index] +
+            (safeTargetVolume - startVolumes[index]) * progress;
           // Ограничиваем значение от 0 до 1, чтобы избежать IndexSizeError
           newVolume = Math.max(0, Math.min(1, newVolume));
 
@@ -324,15 +502,54 @@ class RelaxPlayer {
     }
   }
 
-  async play() {
+  async playWithWebAudio(playId) {
+    const src = this.currentSoundUrl || this.soundUrls[this.currentSound];
+    const audioContext = this.getAudioContext();
+
+    if (!src || !audioContext) {
+      throw new Error("Web Audio API недоступен");
+    }
+
+    await audioContext.resume();
+    const audioBuffer = await this.loadAudioBuffer(src);
+
+    if (playId !== this.audioTransitionId) return;
+
+    this.pauseAudioElements();
+    this.currentBuffer = audioBuffer;
+    this.audioMode = "webAudio";
+    this.isPlaying = true;
+    this.webAudioStartTime = audioContext.currentTime - this.webAudioOffset;
+    this.scheduleWebAudioLoops(this.webAudioOffset);
+    this.playPauseBtn.classList.add("playing");
+    this.iconEQ.setAttribute("src", "images/icon-equalizer-animated.svg");
+    await this.fadeVolume(this.getOutputVolume());
+  }
+
+  async playWithHtmlAudio(playId) {
     // Для iOS важно, чтобы воспроизведение начиналось по жесту
     await this.audio.play();
+
+    if (playId !== this.audioTransitionId) return;
+
+    this.audioMode = "html";
     this.isPlaying = true;
     this.startLoopMonitor();
     this.playPauseBtn.classList.add("playing");
     this.iconEQ.setAttribute("src", "images/icon-equalizer-animated.svg");
     // Плавное нарастание звука
-    await this.fadeVolume(this.volume);
+    await this.fadeVolume(this.getOutputVolume());
+  }
+
+  async play() {
+    const playId = ++this.audioTransitionId;
+
+    try {
+      await this.playWithWebAudio(playId);
+    } catch (error) {
+      console.warn("Web Audio недоступен, используем HTMLAudio:", error);
+      await this.playWithHtmlAudio(playId);
+    }
   }
 
   async pause() {
@@ -341,9 +558,16 @@ class RelaxPlayer {
     this.audioTransitionId += 1;
     this.isCrossfading = false;
 
+    if (this.audioMode === "webAudio" && this.audioContext && this.currentBuffer) {
+      const loopInterval = this.getLoopInterval(this.currentBuffer);
+      const elapsed = this.audioContext.currentTime - this.webAudioStartTime;
+      this.webAudioOffset = ((elapsed % loopInterval) + loopInterval) % loopInterval;
+    }
+
     // Плавное затухание звука
     await this.fadeVolume(0);
 
+    this.clearWebAudioSources();
     this.pauseAudioElements();
     this.playPauseBtn.classList.remove("playing");
     this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
@@ -418,9 +642,10 @@ class RelaxPlayer {
 
     if (minutes > 0) {
       this.timer = setTimeout(async () => {
-        if (this.isIOS) {
+        if (this.isIOS && this.audioMode === "html") {
           this.isPlaying = false;
           this.stopLoopMonitor();
+          this.clearWebAudioSources();
           this.pauseAudioElements();
           this.playPauseBtn.classList.remove("playing");
           this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
@@ -441,11 +666,16 @@ class RelaxPlayer {
   }
 
   toggleMute() {
-    const isMuted = !this.audio.muted;
+    const isMuted = !this.isMuted;
+    this.isMuted = isMuted;
 
     this.audioElements.forEach((audio) => {
       audio.muted = isMuted;
     });
+
+    if (this.audioMode === "webAudio" && !this.fadeAnimation) {
+      this.setMasterGain(this.getOutputVolume());
+    }
 
     if (isMuted) {
       this.volumeBtn.style.backgroundImage = "url('./images/sound-off.svg')";
@@ -466,7 +696,8 @@ class RelaxPlayer {
     this.volume = newVolume;
 
     // Если громкость больше 0, автоматически выключаем mute
-    if (this.volume > 0 && this.audio.muted) {
+    if (this.volume > 0 && this.isMuted) {
+      this.isMuted = false;
       this.audioElements.forEach((audio) => {
         audio.muted = false;
       });
@@ -479,8 +710,12 @@ class RelaxPlayer {
       this.volumeBtn.style.backgroundImage = "url('./images/icon-vol-sound.svg')";
     }
 
+    if (!this.isMuted) {
+      this.volumeSlider.parentElement.classList.remove("player__label_disabled");
+    }
+
     if (this.isPlaying && !this.fadeAnimation) {
-      this.setAudioElementsVolume(this.volume);
+      this.setAudioElementsVolume(this.getOutputVolume());
     }
 
     // Debounce для сохранения в localStorage
@@ -504,7 +739,12 @@ class RelaxPlayer {
   onAudioEnded(audio) {
     console.log("Аудио завершено");
 
-    if (audio === this.audio && this.isPlaying && !this.isCrossfading) {
+    if (
+      this.audioMode === "html" &&
+      audio === this.audio &&
+      this.isPlaying &&
+      !this.isCrossfading
+    ) {
       audio.currentTime = 0;
       audio.play().catch((error) => {
         console.error("Ошибка перезапуска аудио:", error);
