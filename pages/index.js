@@ -52,6 +52,13 @@ class RelaxPlayer {
       blizzard: "sounds/blizzard.mp3",
     };
 
+    this.iosLoopSoundUrls = Object.keys(this.soundUrls).reduce((urls, key) => {
+      urls[key] = this.soundUrls[key]
+        .replace("sounds/", "sounds/ios_loop/")
+        .replace(".mp3", ".m4a");
+      return urls;
+    }, {});
+
     this.backgroundsImagesMap = {
       rain_in_the_forest: "images/img_bg/rain_in_the_forest.webp",
       the_sound_of_rain: "images/img_bg/noise_of_rain.webp",
@@ -146,10 +153,14 @@ class RelaxPlayer {
   }
 
   setupAudio() {
+    this.setAudioSessionPlayback();
+
     this.audioElements.forEach((audio) => {
-      audio.loop = false;
-      audio.volume = 0; // Начинаем с нулевой громкости
+      audio.loop = this.isIOS;
+      audio.volume = this.isIOS ? 1 : 0; // На iOS системная громкость надежнее JS-громкости
       audio.preload = "auto";
+      audio.setAttribute("playsinline", "");
+      audio.setAttribute("webkit-playsinline", "");
     });
 
     // Загружаем первый звук и фон
@@ -157,6 +168,13 @@ class RelaxPlayer {
   }
 
   unlockAudio() {
+    this.setAudioSessionPlayback();
+
+    if (this.isIOS) {
+      console.log("Аудиосессия подготовлена для iOS");
+      return;
+    }
+
     const audioContext = this.getAudioContext();
 
     if (!audioContext) return;
@@ -172,6 +190,24 @@ class RelaxPlayer {
     source.start(0);
 
     console.log("Аудио разблокировано для iOS");
+  }
+
+  setAudioSessionPlayback() {
+    if (!navigator.audioSession) return;
+
+    try {
+      navigator.audioSession.type = "playback";
+    } catch (error) {
+      console.warn("Не удалось установить audioSession playback:", error);
+    }
+  }
+
+  getSoundUrl(key) {
+    if (this.isIOS && this.iosLoopSoundUrls[key]) {
+      return this.iosLoopSoundUrls[key];
+    }
+
+    return this.soundUrls[key];
   }
 
   getAudioContext() {
@@ -329,9 +365,9 @@ class RelaxPlayer {
 
     this.audioElements.forEach((audio) => {
       audio.pause();
-      audio.loop = false;
+      audio.loop = this.isIOS;
       audio.muted = this.isMuted;
-      audio.volume = 0;
+      audio.volume = this.isIOS ? 1 : 0;
       audio.src = src;
       audio.load();
     });
@@ -528,21 +564,39 @@ class RelaxPlayer {
 
   async playWithHtmlAudio(playId) {
     // Для iOS важно, чтобы воспроизведение начиналось по жесту
+    if (this.isIOS) {
+      this.audio.volume = 1;
+    }
+
     await this.audio.play();
 
     if (playId !== this.audioTransitionId) return;
 
     this.audioMode = "html";
     this.isPlaying = true;
-    this.startLoopMonitor();
+
+    if (!this.isIOS) {
+      this.startLoopMonitor();
+    }
+
     this.playPauseBtn.classList.add("playing");
     this.iconEQ.setAttribute("src", "images/icon-equalizer-animated.svg");
+
+    if (this.isIOS) return;
+
     // Плавное нарастание звука
     await this.fadeVolume(this.getOutputVolume());
   }
 
   async play() {
     const playId = ++this.audioTransitionId;
+
+    this.setAudioSessionPlayback();
+
+    if (this.isIOS) {
+      await this.playWithHtmlAudio(playId);
+      return;
+    }
 
     try {
       await this.playWithWebAudio(playId);
@@ -587,8 +641,10 @@ class RelaxPlayer {
     }
 
     // Смена аудио
-    if (this.soundUrls[key]) {
-      this.setAudioSource(this.soundUrls[key]);
+    const soundUrl = this.getSoundUrl(key);
+
+    if (soundUrl) {
+      this.setAudioSource(soundUrl);
     }
 
     // Сброс таймера
