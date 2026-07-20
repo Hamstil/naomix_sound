@@ -6,6 +6,7 @@ class RelaxPlayer {
     this.audioContext = null;
     this.masterGain = null;
     this.audioBufferCache = {};
+    this.audioBufferPromises = {};
     this.audioMode = "html";
     this.currentBuffer = null;
     this.currentSoundUrl = null;
@@ -248,23 +249,55 @@ class RelaxPlayer {
       return this.audioBufferCache[src];
     }
 
+    if (this.audioBufferPromises[src]) {
+      return this.audioBufferPromises[src];
+    }
+
     const audioContext = this.getAudioContext();
 
     if (!audioContext) {
       throw new Error("Web Audio API недоступен");
     }
 
-    const response = await fetch(src);
+    this.audioBufferPromises[src] = (async () => {
+      const response = await fetch(src);
 
-    if (!response.ok) {
-      throw new Error(`Не удалось загрузить аудио: ${src}`);
+      if (!response.ok) {
+        throw new Error(`Не удалось загрузить аудио: ${src}`);
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await this.decodeAudioData(audioContext, arrayBuffer);
+      this.audioBufferCache[src] = audioBuffer;
+      delete this.audioBufferPromises[src];
+
+      return audioBuffer;
+    })().catch((error) => {
+      delete this.audioBufferPromises[src];
+      throw error;
+    });
+
+    return this.audioBufferPromises[src];
+  }
+
+  preloadAudioBuffer(src) {
+    if (this.isIOS || !src || this.audioBufferCache[src]) return;
+
+    this.loadAudioBuffer(src).catch((error) => {
+      console.warn("Не удалось заранее загрузить Web Audio:", error);
+    });
+  }
+
+  primeWebAudioContext() {
+    if (this.isIOS) return;
+
+    const audioContext = this.getAudioContext();
+
+    if (audioContext && audioContext.state === "suspended") {
+      audioContext.resume().catch((error) => {
+        console.warn("Не удалось заранее запустить AudioContext:", error);
+      });
     }
-
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await this.decodeAudioData(audioContext, arrayBuffer);
-    this.audioBufferCache[src] = audioBuffer;
-
-    return audioBuffer;
   }
 
   getCrossfadeSeconds(buffer) {
@@ -394,6 +427,8 @@ class RelaxPlayer {
       audio.src = src;
       audio.load();
     });
+
+    this.preloadAudioBuffer(src);
   }
 
   setAudioElementsVolume(value) {
@@ -642,13 +677,92 @@ class RelaxPlayer {
     await this.fadeVolume(this.getOutputVolume());
   }
 
+  switchHtmlToWebAudio(audioBuffer, playId) {
+    if (
+      this.isIOS ||
+      playId !== this.audioTransitionId ||
+      !this.isPlaying ||
+      this.audioMode !== "html" ||
+      !this.audioContext ||
+      !this.masterGain
+    ) {
+      return;
+    }
+
+    const htmlAudio = this.audio;
+    const loopInterval = this.getLoopInterval(audioBuffer);
+    const offset =
+      ((htmlAudio.currentTime % loopInterval) + loopInterval) % loopInterval;
+    const startVolume = htmlAudio.volume;
+    const targetVolume = this.getOutputVolume();
+    const crossfadeMs = 250;
+    const startTime = performance.now();
+
+    this.currentBuffer = audioBuffer;
+    this.audioMode = "webAudio";
+    this.webAudioOffset = offset;
+    this.webAudioStartTime = this.audioContext.currentTime - offset;
+
+    if (this.audioContext.state === "suspended") {
+      this.audioContext.resume().catch((error) => {
+        console.warn("Не удалось возобновить AudioContext:", error);
+      });
+    }
+
+    this.setMasterGain(0);
+    this.scheduleWebAudioLoops(offset);
+
+    const animate = (currentTime) => {
+      if (playId !== this.audioTransitionId || this.audioMode !== "webAudio") {
+        return;
+      }
+
+      const progress = Math.min((currentTime - startTime) / crossfadeMs, 1);
+      const nextHtmlVolume = startVolume * (1 - progress);
+      const nextWebAudioVolume = targetVolume * progress;
+
+      htmlAudio.volume = Math.max(0, Math.min(1, nextHtmlVolume));
+      this.setMasterGain(nextWebAudioVolume);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      this.pauseAudioElements();
+      this.updatePlaybackUi(true);
+    };
+
+    requestAnimationFrame(animate);
+  }
+
   async play() {
     const playId = ++this.audioTransitionId;
+    const src = this.currentSoundUrl || this.soundUrls[this.currentSound];
 
     this.setAudioSessionPlayback();
 
     if (this.isIOS) {
       await this.playWithHtmlAudio(playId);
+      return;
+    }
+
+    this.primeWebAudioContext();
+
+    if (!src) return;
+
+    if (!this.audioBufferCache[src]) {
+      const audioBufferPromise = this.loadAudioBuffer(src);
+      audioBufferPromise.catch(() => {});
+
+      await this.playWithHtmlAudio(playId);
+
+      audioBufferPromise
+        .then((audioBuffer) => this.switchHtmlToWebAudio(audioBuffer, playId))
+        .catch((error) => {
+          console.warn("Web Audio недоступен, остаемся на HTMLAudio:", error);
+        });
+
       return;
     }
 
