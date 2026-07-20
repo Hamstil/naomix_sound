@@ -55,7 +55,7 @@ class RelaxPlayer {
     this.iosLoopSoundUrls = Object.keys(this.soundUrls).reduce((urls, key) => {
       urls[key] = this.soundUrls[key]
         .replace("sounds/", "sounds/ios_loop/")
-        .replace(".mp3", ".wav");
+        .replace(".mp3", ".m4a");
       return urls;
     }, {});
 
