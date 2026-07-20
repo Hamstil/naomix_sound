@@ -144,11 +144,19 @@ class RelaxPlayer {
       });
     }
 
+    document.addEventListener("visibilitychange", () =>
+      this.syncHtmlAudioState()
+    );
+    window.addEventListener("pageshow", () => this.syncHtmlAudioState());
+    window.addEventListener("focus", () => this.syncHtmlAudioState());
+
     // Обработчики для аудио
     this.audioElements.forEach((audio) => {
       audio.addEventListener("loadeddata", () => this.onAudioLoaded());
       audio.addEventListener("error", (e) => this.onAudioError(e));
       audio.addEventListener("ended", () => this.onAudioEnded(audio));
+      audio.addEventListener("play", () => this.onNativeAudioPlay(audio));
+      audio.addEventListener("pause", () => this.onNativeAudioPause(audio));
     });
   }
 
@@ -406,13 +414,37 @@ class RelaxPlayer {
     });
   }
 
+  updatePlaybackUi(isPlaying) {
+    this.playPauseBtn.classList.toggle("playing", isPlaying);
+    this.iconEQ.setAttribute(
+      "src",
+      isPlaying
+        ? "images/icon-equalizer-animated.svg"
+        : "images/icon-equalizer.svg"
+    );
+  }
+
+  syncHtmlAudioState() {
+    if (this.audioMode !== "html") return;
+
+    const isAudioPlaying = !this.audio.paused && !this.audio.ended;
+    this.isPlaying = isAudioPlaying;
+
+    if (isAudioPlaying && !this.isIOS) {
+      this.startLoopMonitor();
+    } else {
+      this.stopLoopMonitor();
+    }
+
+    this.updatePlaybackUi(isAudioPlaying);
+  }
+
   pauseImmediately() {
     this.isPlaying = false;
     this.stopLoopMonitor();
     this.clearWebAudioSources();
     this.pauseAudioElements();
-    this.playPauseBtn.classList.remove("playing");
-    this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
+    this.updatePlaybackUi(false);
   }
 
   startLoopMonitor() {
@@ -581,8 +613,7 @@ class RelaxPlayer {
     this.isPlaying = true;
     this.webAudioStartTime = audioContext.currentTime - this.webAudioOffset;
     this.scheduleWebAudioLoops(this.webAudioOffset);
-    this.playPauseBtn.classList.add("playing");
-    this.iconEQ.setAttribute("src", "images/icon-equalizer-animated.svg");
+    this.updatePlaybackUi(true);
     await this.fadeVolume(this.getOutputVolume());
   }
 
@@ -603,8 +634,7 @@ class RelaxPlayer {
       this.startLoopMonitor();
     }
 
-    this.playPauseBtn.classList.add("playing");
-    this.iconEQ.setAttribute("src", "images/icon-equalizer-animated.svg");
+    this.updatePlaybackUi(true);
 
     if (this.isIOS) return;
 
@@ -647,8 +677,7 @@ class RelaxPlayer {
 
     this.clearWebAudioSources();
     this.pauseAudioElements();
-    this.playPauseBtn.classList.remove("playing");
-    this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
+    this.updatePlaybackUi(false);
   }
 
   async handleContentChange() {
@@ -809,6 +838,18 @@ class RelaxPlayer {
   onAudioError(e) {
     console.error("Ошибка загрузки аудио:", e);
     // Не показываем alert, чтобы не раздражать пользователя, лучше логировать
+  }
+
+  onNativeAudioPlay(audio) {
+    if (this.audioMode !== "html" || audio !== this.audio) return;
+
+    this.syncHtmlAudioState();
+  }
+
+  onNativeAudioPause(audio) {
+    if (this.audioMode !== "html" || audio !== this.audio) return;
+
+    this.syncHtmlAudioState();
   }
 
   onAudioEnded(audio) {
