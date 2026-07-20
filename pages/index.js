@@ -55,7 +55,7 @@ class RelaxPlayer {
     this.iosLoopSoundUrls = Object.keys(this.soundUrls).reduce((urls, key) => {
       urls[key] = this.soundUrls[key]
         .replace("sounds/", "sounds/ios_loop/")
-        .replace(".mp3", ".m4a");
+        .replace(".mp3", ".wav");
       return urls;
     }, {});
 
@@ -158,7 +158,7 @@ class RelaxPlayer {
     this.audioElements.forEach((audio) => {
       audio.loop = this.isIOS;
       audio.volume = this.isIOS ? 1 : 0; // На iOS системная громкость надежнее JS-громкости
-      audio.preload = "auto";
+      audio.preload = this.isIOS && audio === this.nextAudio ? "none" : "auto";
       audio.setAttribute("playsinline", "");
       audio.setAttribute("webkit-playsinline", "");
     });
@@ -363,11 +363,26 @@ class RelaxPlayer {
     this.webAudioOffset = 0;
     this.audio = this.audioElements[0];
 
+    if (this.isIOS) {
+      this.audio.src = src;
+      this.audio.loop = true;
+      this.audio.muted = this.isMuted;
+      this.audio.volume = 1;
+      this.audio.preload = "auto";
+      this.audio.load();
+
+      this.nextAudio.pause();
+      this.nextAudio.removeAttribute("src");
+      this.nextAudio.preload = "none";
+      this.nextAudio.load();
+      return;
+    }
+
     this.audioElements.forEach((audio) => {
       audio.pause();
-      audio.loop = this.isIOS;
+      audio.loop = false;
       audio.muted = this.isMuted;
-      audio.volume = this.isIOS ? 1 : 0;
+      audio.volume = 0;
       audio.src = src;
       audio.load();
     });
@@ -389,6 +404,15 @@ class RelaxPlayer {
     this.audioElements.forEach((audio) => {
       audio.pause();
     });
+  }
+
+  pauseImmediately() {
+    this.isPlaying = false;
+    this.stopLoopMonitor();
+    this.clearWebAudioSources();
+    this.pauseAudioElements();
+    this.playPauseBtn.classList.remove("playing");
+    this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
   }
 
   startLoopMonitor() {
@@ -698,13 +722,8 @@ class RelaxPlayer {
 
     if (minutes > 0) {
       this.timer = setTimeout(async () => {
-        if (this.isIOS && this.audioMode === "html") {
-          this.isPlaying = false;
-          this.stopLoopMonitor();
-          this.clearWebAudioSources();
-          this.pauseAudioElements();
-          this.playPauseBtn.classList.remove("playing");
-          this.iconEQ.setAttribute("src", "images/icon-equalizer.svg");
+        if (this.isIOS && document.hidden) {
+          this.pauseImmediately();
           this.timerSelect.value = "0";
         } else {
           await this.pause();
