@@ -1,0 +1,23 @@
+@import url(../vendor/normalize.css);
+@import url(../vendor/fonts/Montserrat.css);
+
+@import url(../blocks/page/page.css);
+@import url(../blocks/page/__content404/page__content404.css);
+@import url(../blocks/page/__footer/page__footer.css);
+@import url(../blocks/header/header.css);
+@import url(../blocks/header/__logo/header__logo.css);
+@import url(../blocks/content404/content404.css);
+@import url(../blocks/content404/__title/content404__title.css);
+@import url(../blocks/content404/__description/content404__description.css);
+@import url(../blocks/content404/__link/content404__link.css);
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);
+@import url(../blocks/footer/__cookie/footer__cookie.css);
+@import url(../blocks/legal/legal.css);
+@import url(../blocks/legal/__link/lagel__link.css);
+@import url(../blocks/contacts/contacts.css);
+@import url(../blocks/contacts/__email/contacts__email.css);
+@import url(../blocks/contacts/__icon-email/contacts__icon-email.css);
+@import url(../blocks/contacts/__link/contacts__link.css);
+@import url(../blocks/contacts/__social/contacts__social.css);
+@import url(../blocks/contacts/__social-img/contacts__social-img.css);

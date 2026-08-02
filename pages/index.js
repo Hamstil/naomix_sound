@@ -7,14 +7,16 @@ class RelaxPlayer {
     this.masterGain = null;
     this.audioBufferCache = {};
     this.audioBufferPromises = {};
+    this.audioFetchControllers = {};
+    this.maxCachedAudioBuffers = 1;
     this.audioMode = "html";
     this.currentBuffer = null;
     this.currentSoundUrl = null;
     this.webAudioSources = [];
     this.webAudioStartTime = 0;
     this.webAudioOffset = 0;
-    this.webAudioScheduleAhead = 10 * 60 * 60; // Планируем повторы на долгий фоновый режим
-    this.maxScheduledSources = 1500;
+    this.webAudioNextStartTime = 0;
+    this.webAudioTargetQueueSize = 3;
     this.isPlaying = false;
     this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     this.currentSound = null;
@@ -167,7 +169,8 @@ class RelaxPlayer {
     this.audioElements.forEach((audio) => {
       audio.loop = this.isIOS;
       audio.volume = this.isIOS ? 1 : 0; // На iOS системная громкость надежнее JS-громкости
-      audio.preload = this.isIOS && audio === this.nextAudio ? "none" : "auto";
+      // Не занимаем канал аудио до явного нажатия Play.
+      audio.preload = "none";
       audio.setAttribute("playsinline", "");
       audio.setAttribute("webkit-playsinline", "");
     });
@@ -259,8 +262,11 @@ class RelaxPlayer {
       throw new Error("Web Audio API недоступен");
     }
 
+    const controller = new AbortController();
+    this.audioFetchControllers[src] = controller;
+
     this.audioBufferPromises[src] = (async () => {
-      const response = await fetch(src);
+      const response = await fetch(src, { signal: controller.signal });
 
       if (!response.ok) {
         throw new Error(`Не удалось загрузить аудио: ${src}`);
@@ -268,24 +274,36 @@ class RelaxPlayer {
 
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.decodeAudioData(audioContext, arrayBuffer);
-      this.audioBufferCache[src] = audioBuffer;
-      delete this.audioBufferPromises[src];
+
+      if (src === this.currentSoundUrl) {
+        this.cacheAudioBuffer(src, audioBuffer);
+      }
 
       return audioBuffer;
-    })().catch((error) => {
+    })().finally(() => {
       delete this.audioBufferPromises[src];
-      throw error;
+      delete this.audioFetchControllers[src];
     });
 
     return this.audioBufferPromises[src];
   }
 
-  preloadAudioBuffer(src) {
-    if (this.isIOS || !src || this.audioBufferCache[src]) return;
+  cacheAudioBuffer(src, audioBuffer) {
+    this.audioBufferCache[src] = audioBuffer;
 
-    this.loadAudioBuffer(src).catch((error) => {
-      console.warn("Не удалось заранее загрузить Web Audio:", error);
-    });
+    const cachedUrls = Object.keys(this.audioBufferCache);
+    cachedUrls
+      .filter((cachedSrc) => cachedSrc !== src)
+      .slice(0, Math.max(0, cachedUrls.length - this.maxCachedAudioBuffers + 1))
+      .forEach((cachedSrc) => delete this.audioBufferCache[cachedSrc]);
+  }
+
+  cancelPendingAudioLoadsExcept(src) {
+    Object.entries(this.audioFetchControllers).forEach(
+      ([pendingSrc, controller]) => {
+        if (pendingSrc !== src) controller.abort();
+      },
+    );
   }
 
   primeWebAudioContext() {
@@ -338,6 +356,7 @@ class RelaxPlayer {
     });
 
     this.webAudioSources = [];
+    this.webAudioNextStartTime = 0;
   }
 
   scheduleWebAudioSource(startTime, offset = 0) {
@@ -358,9 +377,32 @@ class RelaxPlayer {
       } catch (error) {
         // Источник мог уже быть отключен при остановке.
       }
+
+      this.webAudioSources = this.webAudioSources.filter(
+        ({ source: activeSource }) => activeSource !== source,
+      );
+
+      if (
+        this.isPlaying &&
+        this.audioMode === "webAudio" &&
+        source.buffer === this.currentBuffer
+      ) {
+        this.fillWebAudioQueue();
+      }
     });
 
     this.webAudioSources.push({ source, startTime });
+  }
+
+  fillWebAudioQueue() {
+    if (!this.currentBuffer || !this.webAudioNextStartTime) return;
+
+    const loopInterval = this.getLoopInterval(this.currentBuffer);
+
+    while (this.webAudioSources.length < this.webAudioTargetQueueSize) {
+      this.scheduleWebAudioSource(this.webAudioNextStartTime);
+      this.webAudioNextStartTime += loopInterval;
+    }
   }
 
   scheduleWebAudioLoops(offset = 0) {
@@ -368,25 +410,13 @@ class RelaxPlayer {
 
     const now = this.audioContext.currentTime;
     const loopInterval = this.getLoopInterval(this.currentBuffer);
-    const scheduleUntil = now + this.webAudioScheduleAhead;
     const safeOffset = Math.max(0, Math.min(offset, loopInterval));
-    let nextStartTime = now;
-    let scheduledCount = 0;
 
     this.clearWebAudioSources();
-    this.scheduleWebAudioSource(nextStartTime, safeOffset);
-    scheduledCount += 1;
-
-    nextStartTime += Math.max(0, loopInterval - safeOffset);
-
-    while (
-      nextStartTime < scheduleUntil &&
-      scheduledCount < this.maxScheduledSources
-    ) {
-      this.scheduleWebAudioSource(nextStartTime);
-      nextStartTime += loopInterval;
-      scheduledCount += 1;
-    }
+    this.scheduleWebAudioSource(now, safeOffset);
+    this.webAudioNextStartTime =
+      now + Math.max(0.01, loopInterval - safeOffset);
+    this.fillWebAudioQueue();
   }
 
   getInactiveAudio() {
@@ -394,8 +424,12 @@ class RelaxPlayer {
   }
 
   setAudioSource(src) {
+    this.cancelPendingAudioLoadsExcept(src);
     this.stopLoopMonitor();
     this.clearWebAudioSources();
+    Object.keys(this.audioBufferCache)
+      .filter((cachedSrc) => cachedSrc !== src)
+      .forEach((cachedSrc) => delete this.audioBufferCache[cachedSrc]);
     this.isCrossfading = false;
     this.audioTransitionId += 1;
     this.audioMode = "html";
@@ -409,13 +443,11 @@ class RelaxPlayer {
       this.audio.loop = true;
       this.audio.muted = this.isMuted;
       this.audio.volume = 1;
-      this.audio.preload = "auto";
-      this.audio.load();
+      this.audio.preload = "none";
 
       this.nextAudio.pause();
       this.nextAudio.removeAttribute("src");
       this.nextAudio.preload = "none";
-      this.nextAudio.load();
       return;
     }
 
@@ -424,11 +456,9 @@ class RelaxPlayer {
       audio.loop = false;
       audio.muted = this.isMuted;
       audio.volume = 0;
+      audio.preload = "none";
       audio.src = src;
-      audio.load();
     });
-
-    this.preloadAudioBuffer(src);
   }
 
   setAudioElementsVolume(value) {
@@ -752,14 +782,17 @@ class RelaxPlayer {
     if (!src) return;
 
     if (!this.audioBufferCache[src]) {
+      // Сначала запускаем потоковое HTML Audio. Полная загрузка и декодирование
+      // для бесшовного Web Audio loop начинаются только после старта звука.
+      await this.playWithHtmlAudio(playId);
+
       const audioBufferPromise = this.loadAudioBuffer(src);
       audioBufferPromise.catch(() => {});
-
-      await this.playWithHtmlAudio(playId);
 
       audioBufferPromise
         .then((audioBuffer) => this.switchHtmlToWebAudio(audioBuffer, playId))
         .catch((error) => {
+          if (error.name === "AbortError") return;
           console.warn("Web Audio недоступен, остаемся на HTMLAudio:", error);
         });
 
